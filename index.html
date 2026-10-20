@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="ja" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>なつほのAIホラー 公式ポータル | Natsuhono AI Horror Official</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Noto+Serif+JP:wght@400;600;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Noto Serif JP"', 'serif'],
+                        cinzel: ['"Cinzel"', 'serif'],
+                        sans: ['"Zen Kaku Gothic New"', 'sans-serif'],
+                    },
+                    colors: {
+                        horror: {
+                            950: '#06070a',
+                            900: '#0d1017',
+                            800: '#161b26',
+                            700: '#232b3c',
+                            red: '#b91c1c',
+                            blood: '#e11d48',
+                            crimson: '#881337',
+                        },
+                        comedy: {
+                            yellow: '#facc15',
+                            tomato: '#ef4444',
+                            orange: '#f97316',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #06070a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #232b3c;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #881337;
+        }
+        .text-glow-red {
+            text-shadow: 0 0 12px rgba(225, 29, 72, 0.7), 0 0 25px rgba(185, 28, 28, 0.4);
+        }
+        .box-glow {
+            box-shadow: 0 0 20px -5px rgba(225, 29, 72, 0.25);
+        }
+        .vignette-overlay {
+            background: radial-gradient(circle at center, transparent 35%, rgba(6, 7, 10, 0.85) 90%);
+        }
+        .mist-bg {
+            background: linear-gradient(180deg, rgba(6,7,10,0.7) 0%, rgba(13,16,23,0.95) 50%, rgba(6,7,10,1) 100%);
+        }
+        @keyframes float-gentle {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-6px); }
+        }
+        .animate-float {
+            animation: float-gentle 4s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="bg-horror-950 text-slate-200 font-sans antialiased selection:bg-horror-blood selection:text-white min-h-screen">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-horror-800 border border-horror-red text-white px-5 py-3 rounded-lg shadow-2xl flex items-center gap-3">
+        <span class="text-horror-blood text-xl">ℹ️</span>
+        <span id="toast-message" class="text-sm font-medium">通知メッセージ</span>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="sticky top-0 z-40 bg-horror-950/90 backdrop-blur-md border-b border-horror-800/80">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-3 group">
+                <span class="w-3 h-3 rounded-full bg-horror-blood animate-pulse"></span>
+                <span class="font-serif font-black text-lg sm:text-xl tracking-wider text-slate-100 group-hover:text-horror-blood transition-colors">
+                    なつほのAIホラー
+                </span>
+                <span class="hidden md:inline-block text-xs uppercase tracking-widest text-slate-400 font-cinzel border-l border-horror-700 pl-3">
+                    Portal
+                </span>
+            </a>
+
+            <!-- Desktop Nav -->
+            <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
+                <a href="#platforms" class="hover:text-horror-blood transition-colors">配信拠点</a>
+                <a href="#works" class="hover:text-horror-blood transition-colors">作品一覧</a>
+                <a href="#characters" class="hover:text-horror-blood transition-colors">登場人物</a>
+                <a href="#ai-manager" class="hover:text-horror-blood transition-colors flex items-center gap-1.5 text-amber-400/90">
+                    <span class="text-xs">⚡</span> AI自律管理
+                </a>
+                <a href="#about" class="hover:text-horror-blood transition-colors">ガイドライン</a>
+            </nav>
+
+            <!-- Quick SNS Jump -->
+            <div class="flex items-center gap-2">
+                <a href="https://www.youtube.com/@natsuhono_ai" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-horror-900 hover:bg-red-600/20 text-slate-300 hover:text-red-500 transition-all border border-horror-800" title="YouTube">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </a>
+                <a href="https://x.com/natsuhono_ai" target="_blank" rel="noopener noreferrer" class="p-2 rounded-lg bg-horror-900 hover:bg-slate-700/30 text-slate-300 hover:text-white transition-all border border-horror-800" title="X (Twitter)">
+                    <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                </a>
+                <button id="mobile-menu-btn" class="md:hidden p-2 text-slate-300 hover:text-white" aria-label="Toggle navigation">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Nav Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-horror-900 border-b border-horror-800 px-4 py-3 space-y-2 text-sm">
+            <a href="#platforms" class="block py-1.5 text-slate-300 hover:text-horror-blood">配信拠点（SNS）</a>
+            <a href="#works" class="block py-1.5 text-slate-300 hover:text-horror-blood">作品一覧</a>
+            <a href="#characters" class="block py-1.5 text-slate-300 hover:text-horror-blood">登場人物（怪異図鑑）</a>
+            <a href="#ai-manager" class="block py-1.5 text-amber-400">⚡ AI自律管理シミュレーター</a>
+            <a href="#about" class="block py-1.5 text-slate-300 hover:text-horror-blood">ガイドライン・案内</a>
+        </div>
+    </header>
+
+    <!-- Breaking News Ticker -->
+    <div class="bg-horror-900/80 border-b border-horror-800/50 py-2 px-4 text-xs">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            <div class="flex items-center gap-2 overflow-hidden">
+                <span class="bg-horror-blood text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider shrink-0">NEWS</span>
+                <div class="truncate text-slate-300">
+                    <span class="text-comedy-yellow font-medium">【新着】</span> おでかけ番外編『ダイシンとブタメンと電気ケトル』X先行公開中！／ ニコニコ『きさらぎ駅と百万光年の芋煮』好評配信中
+                </div>
+            </div>
+            <div class="hidden sm:flex items-center gap-2 text-slate-400 shrink-0">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-ping"></span>
+                <span>全32作品 展開中</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative pt-6 pb-16 md:pt-12 md:pb-24 overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+                
+                <!-- Hero Left: Text & Badges -->
+                <div class="lg:col-span-5 space-y-6 z-10">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-horror-800/90 border border-horror-700/80 text-xs font-medium text-slate-300">
+                        <span class="text-horror-blood">●</span> 7:3 黄金比設計（本格ホラー70% × コメディ30%）
+                    </div>
+
+                    <div class="space-y-3">
+                        <h1 class="font-serif font-black text-3xl sm:text-5xl lg:text-5xl tracking-tight text-white leading-tight">
+                            最恐の怪異と、<br>
+                            <span class="text-horror-blood text-glow-red">脱力な日常。</span>
+                        </h1>
+                        <p class="font-serif text-sm sm:text-base text-slate-400 leading-relaxed">
+                            東北のとある屋敷に暮らす女子二人と、居候の怪異たち。<br class="hidden sm:inline">
+                            張り詰めたJホラーの緊張感を、シュールな笑いで吹き飛ばす<br class="hidden sm:inline">
+                            新感覚ハイパーホラーコメディ。
+                        </p>
+                    </div>
+
+                    <!-- Hero CTA Buttons -->
+                    <div class="flex flex-wrap gap-3 pt-2">
+                        <a href="#works" class="px-5 py-3 rounded-lg bg-horror-blood hover:bg-rose-700 text-white font-bold text-sm tracking-wider shadow-lg shadow-rose-950/50 transition-all flex items-center gap-2">
+                            <span>作品を観る</span>
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                        </a>
+                        <a href="#platforms" class="px-5 py-3 rounded-lg bg-horror-800 hover:bg-horror-700 text-slate-200 font-medium text-sm tracking-wider border border-horror-700 transition-all">
+                            公式SNS一覧
+                        </a>
+                    </div>
+
+                    <!-- Channel Status Badges -->
+                    <div class="pt-4 border-t border-horror-800/60 grid grid-cols-3 gap-3 text-center">
+                        <div class="bg-horror-900/80 p-2.5 rounded-lg border border-horror-800">
+                            <div class="text-xs text-slate-400">総作品数</div>
+                            <div class="text-lg font-bold text-slate-100 font-cinzel">32+</div>
+                        </div>
+                        <div class="bg-horror-900/80 p-2.5 rounded-lg border border-horror-800">
+                            <div class="text-xs text-slate-400">展開媒体</div>
+                            <div class="text-lg font-bold text-slate-100 font-cinzel">4 CH</div>
+                        </div>
+                        <div class="bg-horror-900/80 p-2.5 rounded-lg border border-horror-800">
+                            <div class="text-xs text-slate-400">ニコニコ承認率</div>
+                            <div class="text-lg font-bold text-emerald-400 font-cinzel">100%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hero Right: Key Visual Image Card -->
+                <div class="lg:col-span-7 relative">
+                    <div class="relative rounded-2xl overflow-hidden border border-horror-700/80 shadow-2xl bg-horror-900 group">
+                        <!-- Main Image -->
+                        <img src="assets/key_visual.jpg" 
+                             alt="なつほのAIホラー キービジュアル" 
+                             class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-700">
+                        <div class="absolute inset-0 vignette-overlay pointer-events-none"></div>
+
+                        <!-- Image Badges -->
+                        <div class="absolute top-4 left-4 bg-horror-950/80 backdrop-blur-md border border-horror-800 px-3 py-1 rounded text-xs font-serif text-slate-300">
+                            公式キービジュアル
+                        </div>
+                        <div class="absolute bottom-4 left-4 right-4 bg-horror-950/85 backdrop-blur-md border border-horror-800 p-3 rounded-xl flex items-center justify-between text-xs text-slate-300">
+                            <div class="flex items-center gap-2">
+                                <span class="text-comedy-tomato text-base">🍅</span>
+                                <span>「なつめ」「ほのか」「花子さん」「メリーさん」とおばあちゃんの屋敷</span>
+                            </div>
+                            <span class="text-slate-400 text-[11px] hidden sm:inline">※愛車サンバーバン常駐</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Platform Hub Section (4大拠点) -->
+    <section id="platforms" class="py-16 bg-horror-900/50 border-y border-horror-800/60 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+                <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Official Hub</span>
+                <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">作品公開・配信拠点</h2>
+                <p class="text-sm text-slate-400">
+                    作品の形式や視聴スタイルに合わせてお好きなプラットフォームでご覧いただけます。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- YouTube -->
+                <div class="bg-horror-800/60 hover:bg-horror-800 border border-horror-700/60 hover:border-red-600/50 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-red-600/10 border border-red-500/20 flex items-center justify-center text-red-500 group-hover:bg-red-600 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">YouTube</h3>
+                            <p class="text-xs text-red-400 font-medium">@natsuhono_ai</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                映画的シネマ長尺本編（16:9横型）＆ YouTube Shorts を完全アーカイブ。高画質・本格音響。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-horror-700/60 flex items-center justify-between gap-2">
+                        <a href="https://www.youtube.com/@natsuhono_ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white bg-red-600 hover:bg-red-700 px-3 py-2 rounded-lg transition-colors flex-1 text-center">
+                            チャンネルへ
+                        </a>
+                        <button onclick="copyToClipboard('https://www.youtube.com/@natsuhono_ai', 'YouTubeリンクをコピーしました')" class="p-2 rounded-lg bg-horror-900 hover:bg-horror-700 text-slate-300 hover:text-white text-xs border border-horror-700" title="URLコピー">
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <!-- TikTok -->
+                <div class="bg-horror-800/60 hover:bg-horror-800 border border-horror-700/60 hover:border-cyan-500/50 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400 group-hover:bg-cyan-500 group-hover:text-white transition-colors">
+                            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.97v7.65c.01 1.7-.49 3.44-1.55 4.79-1.39 1.83-3.6 2.87-5.91 2.83-2.12-.03-4.14-.99-5.46-2.65-1.57-1.92-2.02-4.63-1.2-6.95.84-2.34 2.89-4.05 5.38-4.43.34-.05.69-.07 1.04-.07.03 1.34-.02 2.69-.02 4.03-.45.02-.9.13-1.32.32-.97.43-1.68 1.31-1.87 2.34-.28 1.48.51 3.08 1.93 3.66 1.1.47 2.45.33 3.42-.38.74-.53 1.2-1.38 1.24-2.29V.02z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">TikTok</h3>
+                            <p class="text-xs text-cyan-400 font-medium">@natsuhono_ai</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                長編の全話分割連載（『ヤマノケ』全7話、『能面』全5話）や15〜30秒の高速コントショートを配信。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-horror-700/60 flex items-center justify-between gap-2">
+                        <a href="https://www.tiktok.com/@natsuhono_ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-2 rounded-lg transition-colors flex-1 text-center">
+                            TikTokを開く
+                        </a>
+                        <button onclick="copyToClipboard('https://www.tiktok.com/@natsuhono_ai', 'TikTokリンクをコピーしました')" class="p-2 rounded-lg bg-horror-900 hover:bg-horror-700 text-slate-300 hover:text-white text-xs border border-horror-700" title="URLコピー">
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <!-- X (Twitter) -->
+                <div class="bg-horror-800/60 hover:bg-horror-800 border border-horror-700/60 hover:border-slate-400/50 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-slate-700/20 border border-slate-600/30 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors">
+                            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg text-white">X (Twitter)</h3>
+                            <p class="text-xs text-slate-400 font-medium">@natsuhono_ai</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                おでかけ番外編の先行公開、制作舞台裏、座長の思考プロセスや最新情報を最速アナウンス。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-horror-700/60 flex items-center justify-between gap-2">
+                        <a href="https://x.com/natsuhono_ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-black bg-white hover:bg-slate-200 px-3 py-2 rounded-lg transition-colors flex-1 text-center font-medium">
+                            ポストを追う
+                        </a>
+                        <button onclick="copyToClipboard('https://x.com/natsuhono_ai', 'Xのリンクをコピーしました')" class="p-2 rounded-lg bg-horror-900 hover:bg-horror-700 text-slate-300 hover:text-white text-xs border border-horror-700" title="URLコピー">
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ニコニコ動画 -->
+                <div class="bg-horror-800/60 hover:bg-horror-800 border border-horror-700/60 hover:border-amber-500/50 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 group">
+                    <div class="space-y-4">
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:bg-amber-500 group-hover:text-black transition-colors font-bold text-base">
+                            ニコ
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1.5">
+                                <h3 class="font-bold text-lg text-white">ニコニコ動画</h3>
+                                <span class="bg-emerald-500/20 text-emerald-300 text-[10px] px-1.5 py-0.5 rounded border border-emerald-500/40">クリ奨公認</span>
+                            </div>
+                            <p class="text-xs text-amber-400 font-medium">今村 / なつほのAIホラー</p>
+                            <p class="text-xs text-slate-400 mt-2 leading-relaxed">
+                                コメント弾幕とともに味わうホラーコメディ。公式審査全8作即時承認（異議申立率100%突破）。
+                            </p>
+                        </div>
+                    </div>
+                    <div class="pt-6 mt-4 border-t border-horror-700/60 flex items-center justify-between gap-2">
+                        <a href="https://www.nicovideo.jp/user/141697206" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white bg-amber-600 hover:bg-amber-700 px-3 py-2 rounded-lg transition-colors flex-1 text-center">
+                            動画一覧へ
+                        </a>
+                        <button onclick="copyToClipboard('https://www.nicovideo.jp/user/141697206', 'ニコニコリンクをコピーしました')" class="p-2 rounded-lg bg-horror-900 hover:bg-horror-700 text-slate-300 hover:text-white text-xs border border-horror-700" title="URLコピー">
+                            📋
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Works Archive Section -->
+    <section id="works" class="py-16 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+                <div>
+                    <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Filmography</span>
+                    <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">作品アーカイブ</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">代表作・最新作のピックアップ一覧</p>
+                </div>
+
+                <!-- Category Filter Buttons -->
+                <div class="flex flex-wrap gap-2 text-xs" id="category-filter">
+                    <button data-cat="all" class="filter-btn active px-3 py-1.5 rounded-lg bg-horror-blood text-white font-medium border border-horror-blood transition-all">すべて</button>
+                    <button data-cat="feature" class="filter-btn px-3 py-1.5 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">長尺本編</button>
+                    <button data-cat="short" class="filter-btn px-3 py-1.5 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">ショート日常</button>
+                    <button data-cat="vlog" class="filter-btn px-3 py-1.5 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">おでかけ番外編</button>
+                </div>
+            </div>
+
+            <!-- Works Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="works-grid">
+                
+                <!-- Work 1 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="feature">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-2 py-0.5 rounded bg-horror-red/20 text-rose-300 border border-horror-red/40 font-medium">長尺本編（SF伝奇）</span>
+                            <span class="text-slate-400 font-cinzel">約4分 / 16:9</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
+                            虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            終電を逃し異界「きさらぎ駅」に迷い込んだなつめとほのか。凍結した古代の境界神・岐神に、特製芋煮を振る舞って救済するSF怪異コメディ。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#きさらぎ駅</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#芋煮救済</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ニコニコsm46909113</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-emerald-400">● ニコニコ・YouTube公開中</span>
+                        <button onclick="openModal('虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜', '長尺本編（約4分）', '終電を逃して異界のきさらぎ駅に迷い込んだなつめとほのか。極限状態の中でなつめが作り出した「特製芋煮」の湯気が、凍結した古代境界神を包み込み奇跡の救済を果たすSF伝奇ホラーコメディ。', 'https://www.nicovideo.jp/watch/sm46909113', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 2 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-comedy-orange/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="vlog">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium">おでかけ番外編</span>
+                            <span class="text-slate-400 font-cinzel">47秒 / 9:16</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white">
+                            ダイシンとブタメンと電気ケトル
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            フライパンを買いにダイシンへ来たなつめと花子。駄菓子コーナーでブタメンを発見し、展示品ケトルでお湯を沸かそうと暴走するなつめに花子が冷静ツッコミ。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#実体験ロケ</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ブタメン</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#フライパン買い忘れ</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-cyan-400">● X先行公開（2026/10/19）</span>
+                        <button onclick="openModal('ダイシンとブタメンと電気ケトル', 'おでかけ番外編（47秒）', 'フライパン購入の目的を完全に忘却したなつめのスプリントダッシュと、クールな花子の脱力ツッコミ。ラストは夜の国道をサンバーバンで走り去る映画的アウトロ。', 'https://x.com/natsuhono_ai', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 3 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="short">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
+                            <span class="text-slate-400 font-cinzel">2分04秒</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white">
+                            幽霊タクシーで落ち武者との割り勘は可能か？
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            深夜のタクシーに突如現れた怨念の落ち武者。恐怖のシチュエーションで、なつめが持ちかけたのは「割り勘」の提案だった。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#落ち武者</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#割り勘チャレンジ</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ニコニコ即時承認</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-emerald-400">● YouTube / TikTok / ニコニコ</span>
+                        <button onclick="openModal('幽霊タクシーで落ち武者との割り勘は可能か？', 'ショート日常（2分04秒）', '深夜のタクシー怪談に真正面から立ち向かい、落ち武者に電子マネーでの割り勘交渉を挑むシュールな検証ショートコント。', 'https://www.nicovideo.jp/watch/ss46929034', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 4 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="feature">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-2 py-0.5 rounded bg-horror-red/20 text-rose-300 border border-horror-red/40 font-medium">長尺本編（オマージュ）</span>
+                            <span class="text-slate-400 font-cinzel">15分33秒</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white">
+                            【洒落怖】ヤマノケには公式続編があった
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            洒落怖の金字塔『ヤマノケ』と公式続編『懺悔』を継ぐオマージュ奇譚。原作者許諾のもと、おばあちゃんの外法術が怪異に対峙する。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ヤマノケ</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#TikTok2000再生突破</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#本格伝奇</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-emerald-400">● YouTube / TikTok / ニコニコ</span>
+                        <button onclick="openModal('【洒落怖】ヤマノケには公式続編があった', '長尺本編（15分33秒）', '原作者・やまの恵多氏の正式許諾を得て制作された本格長編オマージュ。怪異に憑依されたなつめとほのかをおばあちゃんの呪術が救う。TikTok全7話分割連載でも好評。', 'https://www.nicovideo.jp/watch/sm46916081', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 5 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="short">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
+                            <span class="text-slate-400 font-cinzel">28秒</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white">
+                            小豆洗いと深夜のコインランドリー
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            ショキショキと小豆を洗う音が深夜のコインランドリーに響く。神業のタオル畳みとトマトバーを披露する小豆洗いの日常。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#小豆洗い</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#コインランドリー</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#トマトバー</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-emerald-400">● YouTube / TikTok / ニコニコ</span>
+                        <button onclick="openModal('小豆洗いと深夜のコインランドリー', 'ショート日常（28秒）', 'コインランドリーで怪異・小豆洗いが驚異のスピードでタオルを整然と畳み、トマトバーを口にくわえるシュールな一幕。', 'https://www.nicovideo.jp/watch/ss46911810', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 6 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-comedy-orange/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="vlog">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium">おでかけ番外編</span>
+                            <span class="text-slate-400 font-cinzel">34秒</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white">
+                            完璧な準備と手ぶらのサンバー
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            完璧な下準備をして愛車のサンバーで出発したなつめ。コインランドリーに到着した瞬間、洗濯物を丸ごと忘れて手ぶらであることに気づく。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#サンバーバン</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#忘れ物コント</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#実体験ベース</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-cyan-400">● X公開済み</span>
+                        <button onclick="openModal('完璧な準備と手ぶらのサンバー', 'おでかけ番外編（34秒）', '座長の実体験に基づく哀愁と爆笑のおでかけショート。完璧な段取りの末に訪れる脱力オチ。', 'https://x.com/natsuhono_ai', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Character Dossier (登場人物・怪異図鑑) -->
+    <section id="characters" class="py-16 bg-horror-900/40 border-t border-horror-800/60">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+                <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Dossier</span>
+                <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">登場人物・怪異図鑑</h2>
+                <p class="text-sm text-slate-400">
+                    東北の屋敷に集まった、奇妙で愛おしい家族たち。
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                
+                <!-- Character 1: ほのか -->
+                <div class="bg-horror-800/80 border border-horror-700/70 rounded-xl p-5 space-y-4 hover:border-slate-400 transition-colors">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-400 font-cinzel">HONOKA</span>
+                        <span class="text-[10px] bg-slate-700 text-slate-200 px-2 py-0.5 rounded">18歳 / 語り部</span>
+                    </div>
+                    <div class="border-b border-horror-700 pb-3">
+                        <h3 class="font-serif font-black text-xl text-white">ほのか</h3>
+                        <p class="text-xs text-slate-400 mt-0.5">心優しく理知的な主人公</p>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        なつめの幼馴染。おばあちゃんの家に同居し、数々の怪異遭遇を記録する語り部。黒髪ポニーテールに紺のリボンがトレードマーク。常に敬語で誰に対しても礼儀正しい。
+                    </p>
+                    <div class="text-[11px] bg-horror-900 p-2.5 rounded border border-horror-700/50 text-slate-400">
+                        💬 <span class="italic text-slate-300">「なつめさん、それ展示品ですからお湯出ませんよ」</span>
+                    </div>
+                </div>
+
+                <!-- Character 2: なつめ -->
+                <div class="bg-horror-800/80 border border-horror-700/70 rounded-xl p-5 space-y-4 hover:border-comedy-yellow transition-colors">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-comedy-yellow font-cinzel">NATSUME</span>
+                        <span class="text-[10px] bg-amber-600/30 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40">18歳 / 看板娘</span>
+                    </div>
+                    <div class="border-b border-horror-700 pb-3">
+                        <h3 class="font-serif font-black text-xl text-white">なつめ</h3>
+                        <p class="text-xs text-amber-400 mt-0.5">元気で天然ボケな健啖家</p>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        ほのかの幼馴染でおばあちゃんの実の孫。青いデニムサロペットと黄色チューブトップ。底なしの食欲を持ち、怪異の前でも食べ物のことばかり考えて事態を好転（または脱線）させる。
+                    </p>
+                    <div class="text-[11px] bg-horror-900 p-2.5 rounded border border-horror-700/50 text-slate-400">
+                        💬 <span class="italic text-slate-300">「ここでお湯沸かせば勝ちじゃん！！」</span>
+                    </div>
+                </div>
+
+                <!-- Character 3: 花子さん -->
+                <div class="bg-horror-800/80 border border-horror-700/70 rounded-xl p-5 space-y-4 hover:border-horror-red transition-colors">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-rose-400 font-cinzel">HANAKO</span>
+                        <span class="text-[10px] bg-rose-900/40 text-rose-300 px-2 py-0.5 rounded border border-rose-500/40">9歳 / 退魔魔法少女</span>
+                    </div>
+                    <div class="border-b border-horror-700 pb-3">
+                        <h3 class="font-serif font-black text-xl text-white">花子さん</h3>
+                        <p class="text-xs text-rose-400 mt-0.5">省エネ主義のクール小学生</p>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        廃校舎が壊れたことで屋敷に居候となった「トイレの花子さん」。退魔の番傘を操る頼れる実力派だが、普段はローテンションでなつめの暴走に淡々とツッコミを入れる。
+                    </p>
+                    <div class="text-[11px] bg-horror-900 p-2.5 rounded border border-horror-700/50 text-slate-400">
+                        💬 <span class="italic text-slate-300">「レジでフォーク二つもらっていこうね」</span>
+                    </div>
+                </div>
+
+                <!-- Character 4: メリーさん -->
+                <div class="bg-horror-800/80 border border-horror-700/70 rounded-xl p-5 space-y-4 hover:border-horror-crimson transition-colors">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-rose-300 font-cinzel">MARY</span>
+                        <span class="text-[10px] bg-rose-950 text-rose-200 px-2 py-0.5 rounded border border-rose-800">50cm / 都市伝説</span>
+                    </div>
+                    <div class="border-b border-horror-700 pb-3">
+                        <h3 class="font-serif font-black text-xl text-white">メリーさん</h3>
+                        <p class="text-xs text-rose-300 mt-0.5">おっとりアンティークビスクドール</p>
+                    </div>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        電話をかけながら近づいてくる怪異だが、現在はすっかり屋敷の家族に。深紅のヴィクトリアンドレスを纏い、語尾に「なの」をつけて喋るおっとり系癒やし枠。
+                    </p>
+                    <div class="text-[11px] bg-horror-900 p-2.5 rounded border border-horror-700/50 text-slate-400">
+                        💬 <span class="italic text-slate-300">「私メリー。今、冷蔵庫の前にいるの」</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- AI Autonomous Management Simulator (Gemini / Spark Integration) -->
+    <section id="ai-manager" class="py-16 bg-horror-950 border-t border-horror-800 relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="bg-gradient-to-r from-horror-900 via-horror-900 to-horror-800 border border-amber-500/40 rounded-2xl p-6 sm:p-8 shadow-2xl relative overflow-hidden">
+                
+                <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+                <div class="max-w-3xl space-y-4 mb-6">
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold">
+                        <span>⚡</span> GEMINI SPARK AUTONOMOUS MANAGEMENT
+                    </div>
+                    <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">
+                        AIによるポータル自動管理シミュレーター
+                    </h2>
+                    <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                        座長のご質問<span class="text-amber-300 font-medium">「GeminiのSparkでAIに管理してもらうことは可能か？」</span>を実演するコンソールです。Googleドライブ内の『全作品管理ダッシュボード』やチャット指示から、Webサイトの情報をリアルタイムに自動更新・反映する仕組みをシミュレート体験できます。
+                    </p>
+                </div>
+
+                <!-- Simulator Console -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    
+                    <!-- Left: Control Buttons -->
+                    <div class="lg:col-span-5 space-y-3 bg-horror-950/80 p-4 rounded-xl border border-horror-800 text-xs">
+                        <div class="font-bold text-slate-300 mb-2 flex items-center justify-between">
+                            <span>実行アクション選択</span>
+                            <span class="text-[10px] text-amber-400">Gemini Spark Engine</span>
+                        </div>
+                        
+                        <button onclick="simulateAIAction('sync_sheets')" class="w-full text-left p-3 rounded-lg bg-horror-800 hover:bg-horror-700 border border-horror-700 hover:border-amber-500/60 transition-all flex items-start gap-2.5">
+                            <span class="text-emerald-400 text-sm">📊</span>
+                            <div>
+                                <div class="font-bold text-slate-200">全作品ダッシュボードと自動同期</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">Googleスプレッドシートの最新投稿状況（32本）を反映</div>
+                            </div>
+                        </button>
+
+                        <button onclick="simulateAIAction('add_new_video')" class="w-full text-left p-3 rounded-lg bg-horror-800 hover:bg-horror-700 border border-horror-700 hover:border-amber-500/60 transition-all flex items-start gap-2.5">
+                            <span class="text-rose-400 text-sm">🎬</span>
+                            <div>
+                                <div class="font-bold text-slate-200">最新作『ターボばあちゃん』を速報追加</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">X・TikTok公開に合わせてトップNEWSと一覧を自動更新</div>
+                            </div>
+                        </button>
+
+                        <button onclick="simulateAIAction('update_niconico')" class="w-full text-left p-3 rounded-lg bg-horror-800 hover:bg-horror-700 border border-horror-700 hover:border-amber-500/60 transition-all flex items-start gap-2.5">
+                            <span class="text-amber-400 text-sm">🎖️</span>
+                            <div>
+                                <div class="font-bold text-slate-200">ニコニコ異議申立・承認台帳の同期</div>
+                                <div class="text-[11px] text-slate-400 mt-0.5">最新承認ステータスと獲得予定奨励金をバッジ更新</div>
+                            </div>
+                        </button>
+
+                        <div class="pt-2">
+                            <label class="block text-[11px] text-slate-400 mb-1">座長からのフリー指示テスト：</label>
+                            <div class="flex gap-2">
+                                <input id="custom-prompt" type="text" placeholder="例: 「最新作の告知バナーを赤にして」" class="bg-horror-900 border border-horror-700 rounded px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-amber-500 flex-1">
+                                <button onclick="simulateCustomPrompt()" class="bg-amber-600 hover:bg-amber-500 text-black font-bold px-3 py-1.5 rounded text-xs transition-colors shrink-0">
+                                    送信
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Terminal Output & Live State -->
+                    <div class="lg:col-span-7 bg-horror-950 p-4 rounded-xl border border-horror-800 font-mono text-xs flex flex-col justify-between">
+                        <div class="flex items-center justify-between border-b border-horror-800 pb-2 mb-3">
+                            <div class="flex items-center gap-2">
+                                <span class="w-2.5 h-2.5 rounded-full bg-rose-500 inline-block"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-amber-500 inline-block"></span>
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 inline-block"></span>
+                                <span class="text-slate-400 text-[11px] ml-2">gemini_spark_daemon.log</span>
+                            </div>
+                            <span id="ai-status" class="text-emerald-400 text-[11px] font-sans">● Standby (待機中)</span>
+                        </div>
+
+                        <div id="terminal-content" class="text-slate-300 space-y-1.5 h-44 overflow-y-auto pr-1">
+                            <div class="text-slate-500"># Gemini Spark AI Management Daemon v2.5 initialized.</div>
+                            <div class="text-slate-500"># Connected to Google Drive folder [116SU6_H2rWZgeqpY2Ckrnv3pJIUYhOCB]</div>
+                            <div class="text-emerald-400">> 参謀システム準備完了。左側のボタンを押してAI自動更新をテストしてください。</div>
+                        </div>
+
+                        <div class="pt-3 border-t border-horror-800 mt-2 flex items-center justify-between text-[11px] text-slate-400 font-sans">
+                            <span>本番運用時：GitHub Pages / Cloudflare Pages へ数秒で即時デプロイ</span>
+                            <span class="text-amber-400">保守コスト：0円</span>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- About & Guidelines Section -->
+    <section id="about" class="py-16 bg-horror-900/60 border-t border-horror-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <div class="lg:col-span-5 space-y-3">
+                    <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">About & Guideline</span>
+                    <h2 class="font-serif font-black text-2xl text-white">運営方針と二次利用について</h2>
+                    <p class="text-xs text-slate-400 leading-relaxed">
+                        「なつほのAIホラー」は、AI生成技術と緻密な人間による脚本執筆・音響演出・編集を融合したハイブリッド映像プロジェクトです。
+                    </p>
+                    <div class="p-4 rounded-xl bg-horror-950 border border-horror-800 text-xs text-slate-300 space-y-2">
+                        <div class="font-bold text-amber-400">制作チーム体制</div>
+                        <ul class="space-y-1 text-slate-400">
+                            <li>・総指揮（座長）：企画・統括・実務</li>
+                            <li>・メイン脚本：トマ助（ハイパーホラーコメディ脚本）</li>
+                            <li>・プロンプト・映画演出：影文（Seedance / 画像生成）</li>
+                            <li>・音響監督：鳴海（Google Flow Music / ElevenLabs）</li>
+                            <li>・顧問・実務秘書：参謀（マーケティング / リソース防衛）</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 space-y-2 text-xs">
+                        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                            <span>🎨</span> ファンアート・二次創作ガイドライン
+                        </h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            なつめ、ほのか、花子さん、メリーさん等のキャラクターのファンアートは大歓迎です！SNS投稿時はハッシュタグ <span class="text-amber-400 font-mono">#なつほのAIホラー</span> を添えていただければ公式アカウントよりご紹介・RT等させていただきます。非営利の範囲内での創作・同人活動は自由に行っていただけます。
+                        </p>
+                    </div>
+
+                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 space-y-2 text-xs">
+                        <h3 class="font-bold text-sm text-white flex items-center gap-2">
+                            <span>✂️</span> 切り抜き・引用・紹介について
+                        </h3>
+                        <p class="text-slate-400 leading-relaxed">
+                            YouTube Shorts、TikTok、ニコニコ動画、Xでのご紹介・レビュー・リアクション・切り抜きは、元動画URLとチャンネルクレジットを明記していただければ許諾不要で行っていただけます（公序良俗に反する用途、無断転載・再配布・自作発言は禁止いたします）。
+                        </p>
+                    </div>
+
+                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 flex items-center justify-between text-xs text-slate-300">
+                        <div>
+                            <span class="font-bold text-white">お問い合わせ・協業相談</span>
+                            <p class="text-slate-400 text-[11px] mt-0.5">X（@natsuhono_ai）のDMまたは公式窓口までお願いいたします。</p>
+                        </div>
+                        <a href="https://x.com/natsuhono_ai" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded bg-horror-800 hover:bg-horror-700 text-white font-medium border border-horror-700 transition-colors shrink-0">
+                            公式X DMへ
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-horror-950 border-t border-horror-900 py-8 text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <span class="font-serif font-black text-slate-400">なつほのAIホラー</span>
+                <span>© 2026 なつほのAIホラー All Rights Reserved.</span>
+            </div>
+            
+            <div class="flex items-center gap-4 text-slate-400">
+                <button onclick="easterEgg()" class="hover:text-comedy-tomato transition-colors text-base" title="トマトの神託（イースターエッグ）">
+                    🍅
+                </button>
+                <span>Designed for J-Horror & Comedy</span>
+                <a href="#hero" class="hover:text-white transition-colors">↑ Top</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Video Detail Modal -->
+    <div id="video-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-horror-900 border border-horror-700 rounded-2xl max-w-lg w-full p-6 space-y-4 shadow-2xl relative">
+            <button onclick="closeModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-xl">
+                ✕
+            </button>
+            <div class="space-y-1">
+                <span id="modal-tag" class="text-xs font-bold text-horror-blood font-cinzel">CATEGORY</span>
+                <h3 id="modal-title" class="font-serif font-black text-xl text-white">作品タイトル</h3>
+            </div>
+            <p id="modal-desc" class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+                解説テキスト
+            </p>
+            <div class="pt-4 border-t border-horror-800 flex items-center justify-end gap-3 text-xs">
+                <a id="modal-nico-btn" href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-amber-600 hover:bg-amber-500 text-black font-bold transition-colors">
+                    ニコニコで観る
+                </a>
+                <a id="modal-yt-btn" href="#" target="_blank" rel="noopener noreferrer" class="px-4 py-2 rounded-lg bg-red-600 hover:bg-red-700 text-white font-bold transition-colors">
+                    YouTubeで観る
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Scripts -->
+    <script>
+        // Mobile navigation toggle
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenuBtn && mobileMenu) {
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Toast display function
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toast-message');
+            if (!toast || !toastMsg) return;
+            toastMsg.textContent = msg;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Copy to clipboard with fallback
+        function copyToClipboard(text, successMsg) {
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showToast(successMsg);
+                }).catch(() => {
+                    fallbackCopy(text, successMsg);
+                });
+            } else {
+                fallbackCopy(text, successMsg);
+            }
+        }
+
+        function fallbackCopy(text, successMsg) {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try {
+                document.execCommand('copy');
+                showToast(successMsg);
+            } catch (err) {
+                showToast('URL: ' + text);
+            }
+            document.body.removeChild(ta);
+        }
+
+        // Filter works by category
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const workCards = document.querySelectorAll('.work-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => {
+                    b.classList.remove('bg-horror-blood', 'text-white', 'border-horror-blood', 'active');
+                    b.classList.add('bg-horror-800', 'text-slate-300', 'border-horror-700');
+                });
+                btn.classList.add('bg-horror-blood', 'text-white', 'border-horror-blood', 'active');
+                btn.classList.remove('bg-horror-800', 'text-slate-300', 'border-horror-700');
+
+                const cat = btn.getAttribute('data-cat');
+                workCards.forEach(card => {
+                    if (cat === 'all' || card.getAttribute('data-category') === cat) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Video modal functions
+        function openModal(title, tag, desc, nicoUrl, ytUrl) {
+            const modal = document.getElementById('video-modal');
+            document.getElementById('modal-title').textContent = title;
+            document.getElementById('modal-tag').textContent = tag;
+            document.getElementById('modal-desc').textContent = desc;
+            
+            const nicoBtn = document.getElementById('modal-nico-btn');
+            const ytBtn = document.getElementById('modal-yt-btn');
+            nicoBtn.href = nicoUrl;
+            ytBtn.href = ytUrl;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('video-modal');
+            modal.classList.remove('flex');
+            modal.classList.add('hidden');
+        }
+
+        // Close modal on click backdrop
+        document.getElementById('video-modal').addEventListener('click', (e) => {
+            if (e.target.id === 'video-modal') {
+                closeModal();
+            }
+        });
+
+        // Easter Egg
+        function easterEgg() {
+            const quotes = [
+                '件（クダン）の神託：「このトマトの糖度は9.8度でございます」',
+                '花子さん：「展示品だからお湯出ないよ。買いに来たのフライパンだよね」',
+                'メリーさん：「私メリー。今、冷蔵庫の完熟トマトを吸っているの」',
+                'なつめ：「サンバーに乗ってダイシン行こう！ブタメン食べたい！」'
+            ];
+            const q = quotes[Math.floor(Math.random() * quotes.length)];
+            showToast(q);
+        }
+
+        // AI Management Simulator
+        function simulateAIAction(type) {
+            const term = document.getElementById('terminal-content');
+            const status = document.getElementById('ai-status');
+            status.textContent = '⚡ Running (処理中...)';
+            status.className = 'text-amber-400 text-[11px] font-sans animate-pulse';
+
+            const now = new Date().toLocaleTimeString();
+
+            if (type === 'sync_sheets') {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'text-cyan-300';
+                    line.textContent = `[${now}] [Drive API] スプレッドシート『全作品管理ダッシュボード』を同期中... 32件の作品データを検証完了。`;
+                    term.appendChild(line);
+                }, 400);
+
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'text-emerald-400 font-bold';
+                    line.textContent = `[${now}] [Deploy] ポータルサイト一覧を自動更新しました。GitHub Pagesデプロイ完了（所要時間: 1.2秒）`;
+                    term.appendChild(line);
+                    term.scrollTop = term.scrollHeight;
+                    status.textContent = '● Standby (待機中)';
+                    status.className = 'text-emerald-400 text-[11px] font-sans';
+                    showToast('ダッシュボードの32作品と自動同期完了！');
+                }, 1200);
+
+            } else if (type === 'add_new_video') {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'text-rose-300';
+                    line.textContent = `[${now}] [New Release] 『ターボばあちゃんと真夜中の峠道』の投稿情報を検知。NEWSテロップ及びカードを生成。`;
+                    term.appendChild(line);
+                }, 400);
+
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'text-emerald-400 font-bold';
+                    line.textContent = `[${now}] [Deploy] トップページおよびショート日常一覧へ新着反映完了！`;
+                    term.appendChild(line);
+                    term.scrollTop = term.scrollHeight;
+                    status.textContent = '● Standby (待機中)';
+                    status.className = 'text-emerald-400 text-[11px] font-sans';
+                    showToast('最新作『ターボばあちゃん』をポータルへ追加しました！');
+                }, 1200);
+
+            } else if (type === 'update_niconico') {
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'text-amber-300';
+                    line.textContent = `[${now}] [NicoNico] ドワンゴ窓口審査ログ照合：全9作品の正式承認（承認率100%）を確認。奨励金予定額を再計算。`;
+                    term.appendChild(line);
+                }, 400);
+
+                setTimeout(() => {
+                    const line = document.createElement('div');
+                    line.className = 'text-emerald-400 font-bold';
+                    line.textContent = `[${now}] [Update] ニコニコ公認バッジおよびクリ奨ステータスを即時更新しました。`;
+                    term.appendChild(line);
+                    term.scrollTop = term.scrollHeight;
+                    status.textContent = '● Standby (待機中)';
+                    status.className = 'text-emerald-400 text-[11px] font-sans';
+                    showToast('ニコニコ公認バッジを最新化しました！');
+                }, 1200);
+            }
+        }
+
+        function simulateCustomPrompt() {
+            const input = document.getElementById('custom-prompt');
+            const val = input.value.trim();
+            if (!val) return;
+            const term = document.getElementById('terminal-content');
+            const now = new Date().toLocaleTimeString();
+
+            const promptLine = document.createElement('div');
+            promptLine.className = 'text-white font-bold';
+            promptLine.textContent = `[${now}] 座長指示: "${val}"`;
+            term.appendChild(promptLine);
+
+            input.value = '';
+
+            setTimeout(() => {
+                const respLine = document.createElement('div');
+                respLine.className = 'text-emerald-400';
+                respLine.textContent = `[${now}] [参謀AI] 指示を受理しました。指定条件に基づいてポータルサイトのHTML/JSONを更新し、サーバーへ反映しました。`;
+                term.appendChild(respLine);
+                term.scrollTop = term.scrollHeight;
+                showToast(`参謀AIが指示「${val}」を実行・反映しました`);
+            }, 800);
+        }
+    </script>
+</body>
+</html>
