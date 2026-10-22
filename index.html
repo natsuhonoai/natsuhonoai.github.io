@@ -78,6 +78,12 @@
         .animate-float {
             animation: float-gentle 4s ease-in-out infinite;
         }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
     </style>
 </head>
 <body class="bg-horror-950 text-slate-200 font-sans antialiased selection:bg-horror-blood selection:text-white min-h-screen">
@@ -207,16 +213,25 @@
 alt="なつほのAIホラー 公式キービジュアル" 
 class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-700">
                         
-                        <!-- Image Badges -->
-                        <div class="absolute top-4 left-4 bg-horror-950/80 backdrop-blur-md border border-horror-800 px-3 py-1 rounded text-xs font-serif text-slate-300">
-                            公式キービジュアル
-                        </div>
-                        <div class="absolute bottom-4 left-4 right-4 bg-horror-950/85 backdrop-blur-md border border-horror-800 p-3 rounded-xl flex items-center justify-between text-xs text-slate-300">
-                            <div class="flex items-center gap-2">
-                                <span class="text-comedy-tomato text-base">🍅</span>
-                                <span>「なつめ」「ほのか」「花子さん」「メリーさん」とばあちゃんの屋敷</span>
+                        <!-- トマトの神託（インタラクティブ枠） -->
+                        <div id="oracle-card" onclick="triggerOracle()" class="absolute bottom-4 left-4 right-4 bg-horror-950/90 hover:bg-horror-900 backdrop-blur-md border border-horror-800/90 hover:border-comedy-tomato/60 p-3 rounded-xl cursor-pointer shadow-xl transition-all group/oracle select-none" title="タップで神託を更新">
+                            <div class="flex items-center justify-between gap-3">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <span class="text-comedy-tomato text-xl group-hover/oracle:scale-110 transition-transform">🍅</span>
+                                    <div class="min-w-0">
+                                        <div class="flex items-center gap-2">
+                                            <span class="text-[11px] font-bold text-comedy-tomato tracking-wider uppercase font-serif">トマトの神託</span>
+                                            <span class="text-[9px] text-slate-400 bg-horror-800 px-1.5 py-0.5 rounded border border-horror-700/80">タップで神託を乞う</span>
+                                        </div>
+                                        <p id="oracle-display" class="text-xs text-slate-200 font-medium line-clamp-2 leading-normal min-h-[2.25rem] mt-0.5 transition-all">
+                                            件（クダン）の神託：「このトマトの糖度は9.8度でございます」
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="shrink-0 text-slate-400 group-hover/oracle:text-comedy-tomato transition-colors text-xs px-2 py-1 rounded bg-horror-800 border border-horror-700/60 font-mono">
+                                    🔄 更新
+                                </div>
                             </div>
-                            <span class="text-slate-400 text-[11px] hidden sm:inline">※愛車サンバーバン常駐</span>
                         </div>
                     </div>
                 </div>
@@ -313,8 +328,15 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                 <!-- ニコニコ動画 -->
                 <div class="bg-horror-800/60 hover:bg-horror-800 border border-horror-700/60 hover:border-amber-500/50 rounded-xl p-6 flex flex-col justify-between transition-all duration-300 group">
                     <div class="space-y-4">
-                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:bg-amber-500 group-hover:text-black transition-colors font-bold text-base">
-                            ニコ
+                        <div class="w-12 h-12 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 group-hover:bg-amber-500 group-hover:text-black transition-colors">
+                            <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 6.5L7.2 1.8a1 1 0 0 0-1.4 1.4L10.3 7.7C10.8 7.3 11.4 7 12 6.8V6.5zM12 6.5l4.8-4.7a1 1 0 0 1 1.4 1.4l-4.5 4.5c-.5-.4-1.1-.7-1.7-.9V6.5z"/>
+                                <rect x="2" y="6.5" width="20" height="13.5" rx="3.5" ry="3.5"/>
+                                <path d="M5.5 19.5L3.8 22.2a1 1 0 0 0 1.7 1l2-3.2H5.5zM18.5 19.5l1.7 2.7a1 1 0 0 0 1.7-1l-2-3.2h-1.4z"/>
+                                <ellipse cx="8.5" cy="13.2" rx="1.5" ry="2.2" class="fill-horror-800 group-hover:fill-amber-500 transition-colors"/>
+                                <ellipse cx="15.5" cy="13.2" rx="1.5" ry="2.2" class="fill-horror-800 group-hover:fill-amber-500 transition-colors"/>
+                                <path d="M9.5 16.2c1.2 1.3 3.8 1.3 5 0" class="stroke-horror-800 group-hover:stroke-amber-500 transition-colors" stroke-width="1.4" stroke-linecap="round" fill="none"/>
+                            </svg>
                         </div>
                         <div>
                             <div class="flex items-center gap-1.5">
@@ -638,51 +660,58 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
     <!-- About & Guidelines Section -->
     <section id="about" class="py-16 bg-horror-900/60 border-t border-horror-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+            
+            <!-- Section Header (統一された中央揃えヘッダー) -->
+            <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+                <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">About & Guideline</span>
+                <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">運営方針と制作体制</h2>
+                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                    「なつほのAIホラー」は、総指揮（座長）が企画・脚本・全プロンプト執筆・音響・映像編集を100%手作業で統括し、独自設計の専属AI制作班と共に創り上げる次世代の個人映像スタジオです。
+                </p>
+            </div>
+
+            <!-- Balanced 2-Column Grid (左右均等の美しい段組み) -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                 
-                <div class="lg:col-span-5 space-y-4">
-                    <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">About & Guideline</span>
-                    <h2 class="font-serif font-black text-2xl text-white">運営方針と制作体制</h2>
-                    <p class="text-xs text-slate-400 leading-relaxed">
-                        「なつほのAIホラー」は、総指揮（座長）が企画・脚本・全プロンプト執筆・音響・映像編集を100%手作業で統括し、独自設計の専属AI制作班と共に創り上げる次世代の個人映像スタジオです。
-                    </p>
-                    <div class="p-4 rounded-xl bg-horror-950 border border-horror-800 text-xs text-slate-300 space-y-3">
-                        <div class="flex items-center justify-between border-b border-horror-800 pb-2">
-                            <span class="font-bold text-amber-400">制作スタジオ体制</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-400 px-2 py-0.5 rounded border border-horror-700 font-mono">Solo Studio × AI Agents</span>
+                <!-- Left Column: 制作スタジオ体制 -->
+                <div class="p-6 rounded-2xl bg-horror-950 border border-horror-800 text-xs text-slate-300 space-y-4 shadow-xl">
+                    <div class="flex items-center justify-between border-b border-horror-800 pb-3">
+                        <span class="font-bold text-amber-400 text-sm">制作スタジオ体制</span>
+                        <span class="text-[10px] bg-horror-800 text-slate-400 px-2.5 py-1 rounded border border-horror-700 font-mono">Solo Studio × AI Agents</span>
+                    </div>
+                    
+                    <div class="space-y-1.5">
+                        <div class="text-slate-200 font-bold flex items-center gap-1.5 text-xs">
+                            <span class="text-horror-blood">●</span> 総指揮・制作実務（人間）：座長
                         </div>
-                        
-                        <div class="space-y-1">
-                            <div class="text-slate-200 font-bold flex items-center gap-1.5">
-                                <span class="text-horror-blood">●</span> 総指揮・制作実務（人間）：座長
-                            </div>
-                            <p class="text-[11px] text-slate-400 pl-3 leading-relaxed">
-                                企画原案、全脚本の最終執筆・推敲、生成プロンプト開発、映像カット割り・タイムライン編集、音響ディレクションの全工程を手作業にて完全統括。
-                            </p>
-                        </div>
+                        <p class="text-[11px] text-slate-400 pl-3 leading-relaxed">
+                            企画原案、全脚本の最終執筆・推敲、生成プロンプト開発、映像カット割り・タイムライン編集、音響ディレクションの全工程を手作業にて完全統括。
+                        </p>
+                    </div>
 
-                        <div class="space-y-1.5 pt-2 border-t border-horror-900">
-                            <div class="text-slate-300 font-medium text-[11px] flex items-center justify-between">
-                                <span>【専属AI制作班（特化型カスタムエージェント）】</span>
-                                <span class="text-[10px] text-slate-500">座長専用コ・パイロット</span>
-                            </div>
-                            <ul class="space-y-1 text-[11px] text-slate-400 pl-2">
-                                <li>・<strong class="text-slate-300">メイン脚本AI：トマ助</strong>（座長プロンプティングによる構成・セリフ案設計）</li>
-                                <li>・<strong class="text-slate-300">演出・プロンプトAI：影文</strong>（Seedance/画像生成のカメラワーク・物理記述設計）</li>
-                                <li>・<strong class="text-slate-300">音響監督AI：鳴海</strong>（劇伴BGM・ElevenLabs音声プロンプト設計サポート）</li>
-                                <li>・<strong class="text-slate-300">顧問・戦略AI：参謀</strong>（マーケティング分析・プロダクション規約防衛）</li>
-                            </ul>
+                    <div class="space-y-2 pt-2 border-t border-horror-900">
+                        <div class="text-slate-300 font-medium text-[11px] flex items-center justify-between">
+                            <span>【専属AI制作班（特化型カスタムエージェント）】</span>
+                            <span class="text-[10px] text-slate-500">座長専用コ・パイロット</span>
                         </div>
+                        <ul class="space-y-1.5 text-[11px] text-slate-400 pl-2">
+                            <li>・<strong class="text-slate-300">メイン脚本AI：トマ助</strong>（座長プロンプティングによる構成・セリフ案設計）</li>
+                            <li>・<strong class="text-slate-300">演出・プロンプトAI：影文</strong>（Seedance/画像生成のカメラワーク・物理記述設計）</li>
+                            <li>・<strong class="text-slate-300">音響監督AI：鳴海</strong>（劇伴BGM・ElevenLabs音声プロンプト設計サポート）</li>
+                            <li>・<strong class="text-slate-300">顧問・戦略AI：参謀</strong>（マーケティング分析・プロダクション規約防衛）</li>
+                            <li>・<strong class="text-slate-300">電脳技師AI：九十九</strong>（ポータルサイト保守・JS構文検証・デプロイ同期）</li>
+                        </ul>
+                    </div>
 
-                        <div class="text-[10px] bg-horror-900/90 p-2.5 rounded border border-horror-800 text-slate-400 leading-relaxed">
-                            <strong class="text-emerald-400">※創作宣言・規約遵守について：</strong><br>
-                            本プロジェクトのシナリオ執筆、プロンプト開発、映像・音声編集は、すべて総指揮（座長）が手作業にて行っています。自動生成による粗製濫造は一切行っておらず、各プラットフォームのガイドライン（ニコニコクリエイター奨励プログラム等）に完全準拠しています。
-                        </div>
+                    <div class="text-[10px] bg-horror-900/90 p-3 rounded-xl border border-horror-800 text-slate-400 leading-relaxed mt-2">
+                        <strong class="text-emerald-400">※創作宣言・規約遵守について：</strong><br>
+                        本プロジェクトのシナリオ執筆、プロンプト開発、映像・音声編集は、すべて総指揮（座長）が手作業にて行っています。自動生成による粗製濫造は一切行っておらず、各プラットフォームのガイドライン（ニコニコクリエイター奨励プログラム等）に完全準拠しています。
                     </div>
                 </div>
 
-                <div class="lg:col-span-7 space-y-4">
-                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 space-y-2 text-xs">
+                <!-- Right Column: ガイドライン & お問い合わせ -->
+                <div class="space-y-4">
+                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 space-y-2 text-xs shadow-xl">
                         <h3 class="font-bold text-sm text-white flex items-center gap-2">
                             <span>🎨</span> ファンアート・二次創作ガイドライン
                         </h3>
@@ -691,7 +720,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                         </p>
                     </div>
 
-                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 space-y-2 text-xs">
+                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 space-y-2 text-xs shadow-xl">
                         <h3 class="font-bold text-sm text-white flex items-center gap-2">
                             <span>✂️</span> 切り抜き・引用・紹介について
                         </h3>
@@ -700,7 +729,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                         </p>
                     </div>
 
-                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 flex items-center justify-between text-xs text-slate-300">
+                    <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 flex items-center justify-between text-xs text-slate-300 shadow-xl">
                         <div>
                             <span class="font-bold text-white">お問い合わせ・協業相談</span>
                             <p class="text-slate-400 text-[11px] mt-0.5">X（@natsuhono_ai）のDMまたは公式窓口までお願いいたします。</p>
@@ -724,10 +753,6 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
             </div>
             
             <div class="flex items-center gap-4 text-slate-400">
-                <button onclick="easterEgg()" class="hover:text-comedy-tomato transition-colors text-base" title="トマトの神託（イースターエッグ）">
-                    🍅
-                </button>
-                <span>Designed for J-Horror & Comedy</span>
                 <a href="#hero" class="hover:text-white transition-colors">↑ Top</a>
             </div>
         </div>
@@ -760,25 +785,25 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
     <!-- Interactive Scripts -->
     <script>
         // Mobile navigation toggle
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuBtn = document.getElementById("mobile-menu-btn");
+        const mobileMenu = document.getElementById("mobile-menu");
         if (mobileMenuBtn && mobileMenu) {
-            mobileMenuBtn.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
+            mobileMenuBtn.addEventListener("click", () => {
+                mobileMenu.classList.toggle("hidden");
             });
         }
 
         // Toast display function
         function showToast(msg) {
-            const toast = document.getElementById('toast');
-            const toastMsg = document.getElementById('toast-message');
+            const toast = document.getElementById("toast");
+            const toastMsg = document.getElementById("toast-message");
             if (!toast || !toastMsg) return;
             toastMsg.textContent = msg;
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
+            toast.classList.remove("translate-y-20", "opacity-0");
+            toast.classList.add("translate-y-0", "opacity-100");
             setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.remove("translate-y-0", "opacity-100");
+                toast.classList.add("translate-y-20", "opacity-0");
             }, 3000);
         }
 
@@ -796,40 +821,40 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
         }
 
         function fallbackCopy(text, successMsg) {
-            const ta = document.createElement('textarea');
+            const ta = document.createElement("textarea");
             ta.value = text;
-            ta.style.position = 'fixed';
-            ta.style.opacity = '0';
+            ta.style.position = "fixed";
+            ta.style.opacity = "0";
             document.body.appendChild(ta);
             ta.select();
             try {
-                document.execCommand('copy');
+                document.execCommand("copy");
                 showToast(successMsg);
             } catch (err) {
-                showToast('URL: ' + text);
+                showToast("URL: " + text);
             }
             document.body.removeChild(ta);
         }
 
         // Filter works by category
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const workCards = document.querySelectorAll('.work-card');
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        const workCards = document.querySelectorAll(".work-card");
 
         filterBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
+            btn.addEventListener("click", () => {
                 filterBtns.forEach(b => {
-                    b.classList.remove('bg-horror-blood', 'text-white', 'border-horror-blood', 'active');
-                    b.classList.add('bg-horror-800', 'text-slate-300', 'border-horror-700');
+                    b.classList.remove("bg-horror-blood", "text-white", "border-horror-blood", "active");
+                    b.classList.add("bg-horror-800", "text-slate-300", "border-horror-700");
                 });
-                btn.classList.add('bg-horror-blood', 'text-white', 'border-horror-blood', 'active');
-                btn.classList.remove('bg-horror-800', 'text-slate-300', 'border-horror-700');
+                btn.classList.add("bg-horror-blood", "text-white", "border-horror-blood", "active");
+                btn.classList.remove("bg-horror-800", "text-slate-300", "border-horror-700");
 
-                const cat = btn.getAttribute('data-cat');
+                const cat = btn.getAttribute("data-cat");
                 workCards.forEach(card => {
-                    if (cat === 'all' || card.getAttribute('data-category') === cat) {
-                        card.style.display = 'flex';
+                    if (cat === "all" || card.getAttribute("data-category") === cat) {
+                        card.style.display = "flex";
                     } else {
-                        card.style.display = 'none';
+                        card.style.display = "none";
                     }
                 });
             });
@@ -837,45 +862,79 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
 
         // Video modal functions
         function openModal(title, tag, desc, nicoUrl, ytUrl) {
-            const modal = document.getElementById('video-modal');
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-tag').textContent = tag;
-            document.getElementById('modal-desc').textContent = desc;
+            const modal = document.getElementById("video-modal");
+            document.getElementById("modal-title").textContent = title;
+            document.getElementById("modal-tag").textContent = tag;
+            document.getElementById("modal-desc").textContent = desc;
             
-            const nicoBtn = document.getElementById('modal-nico-btn');
-            const ytBtn = document.getElementById('modal-yt-btn');
+            const nicoBtn = document.getElementById("modal-nico-btn");
+            const ytBtn = document.getElementById("modal-yt-btn");
             nicoBtn.href = nicoUrl;
             ytBtn.href = ytUrl;
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            modal.classList.remove("hidden");
+            modal.classList.add("flex");
         }
 
         function closeModal() {
-            const modal = document.getElementById('video-modal');
-            modal.classList.remove('flex');
-            modal.classList.add('hidden');
+            const modal = document.getElementById("video-modal");
+            modal.classList.remove("flex");
+            modal.classList.add("hidden");
         }
 
         // Close modal on click backdrop
-        document.getElementById('video-modal').addEventListener('click', (e) => {
-            if (e.target.id === 'video-modal') {
+        document.getElementById("video-modal").addEventListener("click", (e) => {
+            if (e.target.id === "video-modal") {
                 closeModal();
             }
         });
 
-        // Easter Egg
-        function easterEgg() {
-            const quotes = [
-                '件（クダン）の神託：「このトマトの糖度は9.8度でございます」',
-                '花子さん：「展示品だからお湯出ないよ。買いに来たのフライパンだよね」',
-                'メリーさん：「私メリー。今、冷蔵庫の完熟トマトを吸っているの」',
-                'なつめ：「サンバーに乗ってダイシン行こう！ブタメン食べたい！」'
-            ];
+        // トマトの神託（全27パターン収録）
+        const quotes = [
+            "件（クダン）の神託：「このトマトの糖度は9.8度でございます」",
+            "件（クダン）の予言：「ダイシンに行く際は買い物メモを持参せよ。さもなくばブタメンのみ携えて帰還することになろう」",
+            "件（クダン）の託宣：「今宵、屋敷に現れし異界の境界神は、熱々の芋煮によって完全に無力化される兆し」",
+            "件（クダン）の神託：「サンバーの助手席に乗る者は、必ずや駄菓子を一口献上せねばならぬ」",
+            "なつめ：「ここでお湯沸かせば勝ちじゃん！！ダイシンの展示ケトル最強！」",
+            "なつめ：「サンバーに乗ってダイシン行こう！ブタメン食べたい！」",
+            "なつめ：「芋煮に完熟トマト入れたら絶対美味しいって！……え、ばあちゃん怒る？」",
+            "なつめ：「落ち武者さん、電子マネー使えます？割り勘なら私の方多めに出しますよ！」",
+            "ほのか：「なつめさん、要するにダイシンでフライパンを買い忘れたわけですね」",
+            "ほのか：「怪異の皆様、お茶が入りましたので大広間へどうぞ。縁側の小豆洗いさんもご一緒に」",
+            "ほのか：「きさらぎ駅にも自動改札機があれば、Suicaで何事もなく出られたのですが……」",
+            "ほのか：「サンバーの荷台は怪異の避難所ではありません。速やかに席へお戻りください」",
+            "花子さん：「展示品だからお湯出ないよ。買いに来たのフライパンだよね」",
+            "花子さん：「レジでフォーク二つもらっていこうね。車内でブタメン食べる気満々でしょ」",
+            "花子さん：「この退魔番傘、怨念を断ち切る外法具なんだけど……日傘代わりにちょうどいいや」",
+            "メリーさん：「私メリー。今、冷蔵庫の完熟トマトを吸っているの」",
+            "メリーさん：「私メリー。今、あなたの後ろ……じゃなくてダイシンの工具売り場にいるの」",
+            "メリーさん：「私メリー。電波が一本も立たない東北の山奥でも、なぜかお電話はつながるの」",
+            "ばあちゃん：「怪異の一匹や二匹、芋煮食わせておけば大人しくなるべ」",
+            "ばあちゃん：「サンバーのオイル交換はケチるなよ。山道でエンストしたら怪異より怖えぞ」",
+            "ばあちゃん：「昔っからこの辺の境界神には、醤油仕立ての熱い芋煮が一番効くんだ」",
+            "小豆洗い：「ショキショキ……（深夜のコインランドリーで全自動乾燥機をじっと見つめている）」",
+            "小豆洗い：「ショキショキ……（トマトバーの袋を神業の素早さで開けている）」",
+            "トマ助（脚本AI）：「脚本のタイムバジェットが3秒オーバーです！市川崑的沈黙で削りましょう！」",
+            "影文（演出AI）：「カメラワークをフィックスからゆっくりドリーイン。トマトの赤をシネマティックに強調します」",
+            "鳴海（音響AI）：「フォーリーSE：ダイシンの自動ドアの開閉音と、ブタメンを勢いよくすする音を配置しました」",
+            "参謀（戦略AI）：「座長、ガス欠厳禁です。省エネかつ最大効果の演出で参りましょう」",
+            "九十九（電脳AI）：「インラインJSの乱れを調伏いたしました。構文検証（SYNTAX OK）完了でございます」"
+        ];
+
+        function triggerOracle() {
             const q = quotes[Math.floor(Math.random() * quotes.length)];
-            showToast(q);
+            const disp = document.getElementById("oracle-display");
+            if (disp) {
+                disp.textContent = q;
+                disp.classList.add("text-comedy-tomato");
+                setTimeout(() => disp.classList.remove("text-comedy-tomato"), 500);
+            }
         }
 
+        // 旧名称互換
+        function easterEgg() {
+            triggerOracle();
+        }
     </script>
 </body>
 </html>
