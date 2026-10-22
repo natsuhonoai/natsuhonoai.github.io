@@ -306,7 +306,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                         <a href="https://www.tiktok.com/@natsuhono_ai" target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-white bg-slate-800 hover:bg-slate-700 border border-slate-600 px-3 py-2 rounded-lg transition-colors flex-1 text-center">
                             TikTokを開く
                         </a>
-                        <button onclick="copyToClipboard('https://www.tiktok.com/@natsuhono_ai', 'TikTokリンクをコピーしました')" class="p-2 rounded-lg bg-horror-900 hover:bg-horror-700 text-slate-300 hover:text-white text-xs border border-horror-700" title="URLコピー">
+                        <button onclick="copyToClipboard('', 'TikTokリンクをコピーしました')" class="p-2 rounded-lg bg-horror-900 hover:bg-horror-700 text-slate-300 hover:text-white text-xs border border-horror-700" title="URLコピー">
                             📋
                         </button>
                     </div>
@@ -473,7 +473,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                     </div>
                     <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
                         <span class="text-cyan-400">● TikTok公開中</span>
-                        <button onclick="openModal('花子さんの現代トイレ事情', '家族の日常（28秒）', '小学校のトイレが洋式化して出られなくなった花子さんとほのかの気まずい沈黙コント。', '', '', 'https://www.tiktok.com/@natsuhono_ai', '')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1 group/btn">
+                        <button onclick="openModal('花子さんの現代トイレ事情', '家族の日常（28秒）', '小学校のトイレが洋式化して出られなくなった花子さんとほのかの気まずい沈黙コント。', '', '', '', '')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1 group/btn">
                             <span>詳細・解説</span> <span class="group-hover/btn:translate-x-1 transition-transform">→</span>
                         </button>
                     </div>
@@ -501,7 +501,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                     </div>
                     <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
                         <span class="text-emerald-400">● YouTube / TikTok公開中</span>
-                        <button onclick="openModal('路地裏のスライディング', '家族の日常（26秒）', 'カシマさんの顔面にほのかのスリップツインドロップキックが直撃するコント。【YouTube】10/11夜にShorts公開予定。...', '', 'https://www.youtube.com/watch?v=3IqGjRqepnA', 'https://www.tiktok.com/@natsuhono_ai', '')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1 group/btn">
+                        <button onclick="openModal('路地裏のスライディング', '家族の日常（26秒）', 'カシマさんの顔面にほのかのスリップツインドロップキックが直撃するコント。【YouTube】10/11夜にShorts公開予定。...', '', 'https://www.youtube.com/watch?v=3IqGjRqepnA', '', '')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1 group/btn">
                             <span>詳細・解説</span> <span class="group-hover/btn:translate-x-1 transition-transform">→</span>
                         </button>
                     </div>
@@ -896,7 +896,19 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
             });
         });
 
-                // Video modal functions with strict precision guard
+                // Video modal functions with strict precision guard & split series support
+        function isValid(u) {
+            if (!u) return false;
+            const s = String(u).trim();
+            if (!s.startsWith('http')) return false;
+            // Exclude generic account/profile URLs that are not video links
+            if (s === '' || s === 'https://www.tiktok.com/@natsuhono_ai/' || s.endsWith('/@natsuhono_ai') || s.endsWith('/@natsuhono_ai/')) return false;
+            if (s.includes('nicovideo.jp/user/141697206')) return false;
+            if (s === 'https://x.com/natsuhono_ai' || s.endsWith('x.com/natsuhono_ai') || s.endsWith('twitter.com/natsuhono_ai')) return false;
+            if (s === 'https://www.youtube.com/@natsuhono_ai' || s.endsWith('/@natsuhono_ai')) return false;
+            return true;
+        }
+
         function openModal(title, tag, desc, nicoUrl, ytUrl, ttUrl, xUrl) {
             const modal = document.getElementById("video-modal");
             document.getElementById("modal-title").textContent = title;
@@ -908,12 +920,6 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
             const ttBtn = document.getElementById("modal-tt-btn");
             const xBtn = document.getElementById("modal-x-btn");
             const emptyNotice = document.getElementById("modal-empty-notice");
-
-            function isValid(u) {
-                if (!u) return false;
-                const s = String(u).trim();
-                return s !== '' && s !== 'null' && s !== 'undefined' && s.startsWith('http');
-            }
 
             let hasAny = false;
 
@@ -936,6 +942,19 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
             if (isValid(ttUrl)) {
                 ttBtn.href = ttUrl.trim();
                 ttBtn.style.display = 'inline-flex';
+                // Check if split series
+                const splitMatch = (tag + ' ' + desc).match(/全(\d+)話/);
+                if (splitMatch) {
+                    ttBtn.innerHTML = `
+                        <svg class="w-4 h-4 fill-current mr-1.5" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.97v7.65c.01 1.7-.49 3.44-1.55 4.79-1.39 1.83-3.6 2.87-5.91 2.83-2.12-.03-4.14-.99-5.46-2.65-1.57-1.92-2.02-4.63-1.2-6.95.84-2.34 2.89-4.05 5.38-4.43.34-.05.69-.07 1.04-.07.03 1.34-.02 2.69-.02 4.03-.45.02-.9.13-1.32.32-.97.43-1.68 1.31-1.87 2.34-.28 1.48.51 3.08 1.93 3.66 1.1.47 2.45.33 3.42-.38.74-.53 1.2-1.38 1.24-2.29V.02z"/></svg>
+                        <span>TikTok（全${splitMatch[1]}話・第1話へ）</span>
+                    `;
+                } else {
+                    ttBtn.innerHTML = `
+                        <svg class="w-4 h-4 fill-current mr-1.5" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.97v7.65c.01 1.7-.49 3.44-1.55 4.79-1.39 1.83-3.6 2.87-5.91 2.83-2.12-.03-4.14-.99-5.46-2.65-1.57-1.92-2.02-4.63-1.2-6.95.84-2.34 2.89-4.05 5.38-4.43.34-.05.69-.07 1.04-.07.03 1.34-.02 2.69-.02 4.03-.45.02-.9.13-1.32.32-.97.43-1.68 1.31-1.87 2.34-.28 1.48.51 3.08 1.93 3.66 1.1.47 2.45.33 3.42-.38.74-.53 1.2-1.38 1.24-2.29V.02z"/></svg>
+                        <span>TikTokで観る</span>
+                    `;
+                }
                 hasAny = true;
             } else {
                 ttBtn.style.display = 'none';
