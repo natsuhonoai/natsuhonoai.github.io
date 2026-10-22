@@ -110,7 +110,11 @@
             <!-- Desktop Nav -->
             <nav class="hidden md:flex items-center gap-6 text-sm font-medium text-slate-300">
                 <a href="#platforms" class="hover:text-horror-blood transition-colors">配信拠点</a>
-                <a href="#works" class="hover:text-horror-blood transition-colors">作品一覧</a>
+                <a href="#works" class="hover:text-horror-blood transition-colors">最新作品</a>
+                <a href="works.html" class="text-comedy-yellow hover:text-white transition-colors flex items-center gap-1.5 font-bold">
+                    <span>全作品一覧</span>
+                    <span class="text-[10px] bg-horror-800 text-slate-300 px-1.5 py-0.5 rounded border border-horror-700 font-cinzel">32+</span>
+                </a>
                 <a href="#characters" class="hover:text-horror-blood transition-colors">登場人物</a>
                 <a href="#about" class="hover:text-horror-blood transition-colors">ガイドライン</a>
             </nav>
@@ -132,7 +136,11 @@
         <!-- Mobile Nav Menu -->
         <div id="mobile-menu" class="hidden md:hidden bg-horror-900 border-b border-horror-800 px-4 py-3 space-y-2 text-sm">
             <a href="#platforms" class="block py-1.5 text-slate-300 hover:text-horror-blood">配信拠点（SNS）</a>
-            <a href="#works" class="block py-1.5 text-slate-300 hover:text-horror-blood">作品一覧</a>
+            <a href="#works" class="block py-1.5 text-slate-300 hover:text-horror-blood">最新公開作品</a>
+            <a href="works.html" class="block py-1.5 text-comedy-yellow hover:text-white font-bold flex items-center justify-between">
+                <span>全作品一覧（全32作品アーカイブ）</span>
+                <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded border border-horror-700 font-cinzel">32+</span>
+            </a>
             <a href="#characters" class="block py-1.5 text-slate-300 hover:text-horror-blood">登場人物（怪異図鑑）</a>
             <a href="#about" class="block py-1.5 text-slate-300 hover:text-horror-blood">ガイドライン・案内</a>
         </div>
@@ -190,10 +198,13 @@
 
                     <!-- Channel Status Badges -->
                     <div class="pt-4 border-t border-horror-800/60 grid grid-cols-3 gap-3 text-center">
-                        <div class="bg-horror-900/80 p-2.5 rounded-lg border border-horror-800">
-                            <div class="text-xs text-slate-400">総作品数</div>
-                            <div class="text-lg font-bold text-slate-100 font-cinzel">32+</div>
-                        </div>
+                        <a href="works.html" class="bg-horror-900/80 hover:bg-horror-800 p-2.5 rounded-lg border border-horror-800 hover:border-comedy-yellow/50 transition-all block group" title="全作品アーカイブを見る">
+                            <div class="text-xs text-slate-400 group-hover:text-comedy-yellow transition-colors">総作品数</div>
+                            <div class="text-lg font-bold text-slate-100 font-cinzel flex items-center justify-center gap-1">
+                                <span>32+</span>
+                                <span class="text-[10px] text-slate-400 group-hover:translate-x-0.5 transition-transform">→</span>
+                            </div>
+                        </a>
                         <div class="bg-horror-900/80 p-2.5 rounded-lg border border-horror-800">
                             <div class="text-xs text-slate-400">展開媒体</div>
                             <div class="text-lg font-bold text-slate-100 font-cinzel">4 CH</div>
@@ -362,174 +373,103 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
     </section>
 
     <!-- Works Archive Section -->
+        <!-- Works Archive Section (最新6作品ピックアップ & 全作品アーカイブ導線) -->
     <section id="works" class="py-16 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
                 <div>
-                    <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Filmography</span>
-                    <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">作品アーカイブ</h2>
-                    <p class="text-xs sm:text-sm text-slate-400 mt-1">代表作・最新作のピックアップ一覧</p>
+                    <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Latest Works</span>
+                    <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">最新公開作品</h2>
+                    <p class="text-xs sm:text-sm text-slate-400 mt-1">最新作ピックアップ（新しい順に6作品表示中 / 全作品はアーカイブページで公開中）</p>
                 </div>
 
-                <!-- Category Filter Buttons -->
-                <div class="flex flex-wrap gap-2 text-xs" id="category-filter">
-                    <button data-cat="all" class="filter-btn active px-3 py-1.5 rounded-lg bg-horror-blood text-white font-medium border border-horror-blood transition-all">すべて</button>
-                    <button data-cat="feature" class="filter-btn px-3 py-1.5 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">長尺本編</button>
-                    <button data-cat="short" class="filter-btn px-3 py-1.5 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">ショート日常</button>
-                    <button data-cat="vlog" class="filter-btn px-3 py-1.5 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">おでかけ番外編</button>
+                <!-- Archive Page Link Button -->
+                <div class="flex items-center gap-3">
+                    <a href="works.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-horror-900 hover:bg-horror-800 text-comedy-yellow hover:text-white text-xs font-bold border border-horror-700/80 hover:border-comedy-yellow/60 transition-all shadow-md group">
+                        <span>全作品アーカイブ（32作品）</span>
+                        <span class="group-hover:translate-x-1 transition-transform">→</span>
+                    </a>
                 </div>
             </div>
 
-            <!-- Works Grid -->
+            <!-- Works Grid (Top 6 Newest Works) -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="works-grid">
                 
-                <!-- Work 1 -->
-                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="feature">
-                    <div class="p-5 space-y-3">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="px-2 py-0.5 rounded bg-horror-red/20 text-rose-300 border border-horror-red/40 font-medium">長尺本編（SF伝奇）</span>
-                            <span class="text-slate-400 font-cinzel">約4分 / 16:9</span>
-                        </div>
-                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
-                            虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            終電を逃し異界「きさらぎ駅」に迷い込んだなつめとほのか。凍結した古代の境界神・岐神に、特製芋煮を振る舞って救済するSF怪異コメディ。
-                        </p>
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#きさらぎ駅</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#芋煮救済</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ニコニコsm46909113</span>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
-                        <span class="text-emerald-400">● ニコニコ・YouTube公開中</span>
-                        <button onclick="openModal('虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜', '長尺本編（約4分）', '終電を逃して異界のきさらぎ駅に迷い込んだなつめとほのか。極限状態の中でなつめが作り出した「特製芋煮」の湯気が、凍結した古代境界神を包み込み奇跡の救済を果たすSF伝奇ホラーコメディ。', 'https://www.nicovideo.jp/watch/sm46909113', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
-                            詳細・解説 <span>→</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Work 2 -->
+                <!-- Work 1: No.32 ダイシンとブタメンと電気ケトル -->
                 <div class="work-card bg-horror-900 border border-horror-800 hover:border-comedy-orange/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="vlog">
                     <div class="p-5 space-y-3">
                         <div class="flex items-center justify-between text-xs">
-                            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium">おでかけ番外編</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-cinzel font-bold text-slate-400 text-xs">No.32</span>
+                                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium">おでかけ番外編</span>
+                            </div>
                             <span class="text-slate-400 font-cinzel">47秒 / 9:16</span>
                         </div>
-                        <h3 class="font-serif font-bold text-lg text-white">
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-amber-300 transition-colors">
                             ダイシンとブタメンと電気ケトル
                         </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
                             フライパンを買いにダイシンへ来たなつめと花子。駄菓子コーナーでブタメンを発見し、展示品ケトルでお湯を沸かそうと暴走するなつめに花子が冷静ツッコミ。
                         </p>
                         <div class="flex flex-wrap gap-1.5 pt-1">
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#実体験ロケ</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ダイシン</span>
                             <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ブタメン</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#フライパン買い忘れ</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#実体験ロケ</span>
                         </div>
                     </div>
                     <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
-                        <span class="text-cyan-400">● X先行公開（2026/10/19）</span>
+                        <span class="text-amber-400">● X先行公開（2026/10/19）</span>
                         <button onclick="openModal('ダイシンとブタメンと電気ケトル', 'おでかけ番外編（47秒）', 'フライパン購入の目的を完全に忘却したなつめのスプリントダッシュと、クールな花子の脱力ツッコミ。ラストは夜の国道をサンバーバンで走り去る映画的アウトロ。', 'https://x.com/natsuhono_ai', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
                             詳細・解説 <span>→</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Work 3 -->
+                <!-- Work 2: No.31 ターボばあちゃんと真夜中の峠道 -->
                 <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="short">
                     <div class="p-5 space-y-3">
                         <div class="flex items-center justify-between text-xs">
-                            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
-                            <span class="text-slate-400 font-cinzel">2分04秒</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-cinzel font-bold text-slate-400 text-xs">No.31</span>
+                                <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
+                            </div>
+                            <span class="text-slate-400 font-cinzel">25秒</span>
                         </div>
-                        <h3 class="font-serif font-bold text-lg text-white">
-                            幽霊タクシーで落ち武者との割り勘は可能か？
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
+                            ターボばあちゃんと真夜中の峠道
                         </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            深夜のタクシーに突如現れた怨念の落ち武者。恐怖のシチュエーションで、なつめが持ちかけたのは「割り勘」の提案だった。
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                            深夜の峠道をサンバーで走るなつめを四つん這いで猛追するターボばあちゃん。恐怖のカーチェイスの末に窓をノックされ、開けっぱなしの給油口を親切に教えて去っていくシュール日常ホラーコメディ。
                         </p>
                         <div class="flex flex-wrap gap-1.5 pt-1">
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#落ち武者</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#割り勘チャレンジ</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ニコニコ即時承認</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ターボばあちゃん</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#サンバー</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#峠道チェイス</span>
                         </div>
                     </div>
                     <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
-                        <span class="text-emerald-400">● YouTube / TikTok / ニコニコ</span>
-                        <button onclick="openModal('幽霊タクシーで落ち武者との割り勘は可能か？', 'ショート日常（2分04秒）', '深夜のタクシー怪談に真正面から立ち向かい、落ち武者に電子マネーでの割り勘交渉を挑むシュールな検証ショートコント。', 'https://www.nicovideo.jp/watch/ss46929034', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                        <span class="text-emerald-400">● 予約公開（2026/10/17）</span>
+                        <button onclick="openModal('ターボばあちゃんと真夜中の峠道', 'ショート日常（25秒）', '深夜の峠道をサンバーで走るなつめを四つん這いで猛追するターボばあちゃん。親切に給油口を教えて去る脱力オチ。', 'https://www.tiktok.com/@natsuhono_ai', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
                             詳細・解説 <span>→</span>
                         </button>
                     </div>
                 </div>
 
-                <!-- Work 4 -->
-                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="feature">
-                    <div class="p-5 space-y-3">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="px-2 py-0.5 rounded bg-horror-red/20 text-rose-300 border border-horror-red/40 font-medium">長尺本編（オマージュ）</span>
-                            <span class="text-slate-400 font-cinzel">15分33秒</span>
-                        </div>
-                        <h3 class="font-serif font-bold text-lg text-white">
-                            【洒落怖】ヤマノケには公式続編があった
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            洒落怖の金字塔『ヤマノケ』と公式続編『懺悔』を継ぐオマージュ奇譚。原作者許諾のもと、ばあちゃんの外法術が怪異に対峙する。
-                        </p>
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ヤマノケ</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#TikTok2000再生突破</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#本格伝奇</span>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
-                        <span class="text-emerald-400">● YouTube / TikTok / ニコニコ</span>
-                        <button onclick="openModal('【洒落怖】ヤマノケには公式続編があった', '長尺本編（15分33秒）', '原作者・やまの恵多氏の正式許諾を得て制作された本格長編オマージュ。怪異に憑依されたなつめとほのかをばあちゃんの呪術が救う。TikTok全7話分割連載でも好評。', 'https://www.nicovideo.jp/watch/sm46916081', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
-                            詳細・解説 <span>→</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Work 5 -->
-                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="short">
-                    <div class="p-5 space-y-3">
-                        <div class="flex items-center justify-between text-xs">
-                            <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
-                            <span class="text-slate-400 font-cinzel">28秒</span>
-                        </div>
-                        <h3 class="font-serif font-bold text-lg text-white">
-                            小豆洗いと深夜のコインランドリー
-                        </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
-                            ショキショキと小豆を洗う音が深夜のコインランドリーに響く。神業のタオル畳みとトマトバーを披露する小豆洗いの日常。
-                        </p>
-                        <div class="flex flex-wrap gap-1.5 pt-1">
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#小豆洗い</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#コインランドリー</span>
-                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#トマトバー</span>
-                        </div>
-                    </div>
-                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
-                        <span class="text-emerald-400">● YouTube / TikTok / ニコニコ</span>
-                        <button onclick="openModal('小豆洗いと深夜のコインランドリー', 'ショート日常（28秒）', 'コインランドリーで怪異・小豆洗いが驚異のスピードでタオルを整然と畳み、トマトバーを口にくわえるシュールな一幕。', 'https://www.nicovideo.jp/watch/ss46911810', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
-                            詳細・解説 <span>→</span>
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Work 6 -->
+                <!-- Work 3: No.30 完璧な準備と手ぶらのサンバー -->
                 <div class="work-card bg-horror-900 border border-horror-800 hover:border-comedy-orange/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="vlog">
                     <div class="p-5 space-y-3">
                         <div class="flex items-center justify-between text-xs">
-                            <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium">おでかけ番外編</span>
+                            <div class="flex items-center gap-2">
+                                <span class="font-cinzel font-bold text-slate-400 text-xs">No.30</span>
+                                <span class="px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/40 font-medium">おでかけ番外編</span>
+                            </div>
                             <span class="text-slate-400 font-cinzel">34秒</span>
                         </div>
-                        <h3 class="font-serif font-bold text-lg text-white">
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-amber-300 transition-colors">
                             完璧な準備と手ぶらのサンバー
                         </h3>
-                        <p class="text-xs text-slate-400 leading-relaxed">
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
                             完璧な下準備をして愛車のサンバーで出発したなつめ。コインランドリーに到着した瞬間、洗濯物を丸ごと忘れて手ぶらであることに気づく。
                         </p>
                         <div class="flex flex-wrap gap-1.5 pt-1">
@@ -539,14 +479,114 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                         </div>
                     </div>
                     <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
-                        <span class="text-cyan-400">● X公開済み</span>
+                        <span class="text-amber-400">● X公開済み（2026/10/11）</span>
                         <button onclick="openModal('完璧な準備と手ぶらのサンバー', 'おでかけ番外編（34秒）', '座長の実体験に基づく哀愁と爆笑のおでかけショート。完璧な段取りの末に訪れる脱力オチ。', 'https://x.com/natsuhono_ai', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
                             詳細・解説 <span>→</span>
                         </button>
                     </div>
                 </div>
 
+                <!-- Work 4: No.28 花子さんの現代トイレ事情 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="short">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-cinzel font-bold text-slate-400 text-xs">No.28</span>
+                                <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
+                            </div>
+                            <span class="text-slate-400 font-cinzel">28秒</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
+                            花子さんの現代トイレ事情
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                            小学校のトイレが全面洋式化＆自動センサー化してしまい、出られなくなった花子さんと、それに気づいたほのかの気まずい沈黙コント。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#花子さん</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#洋式トイレ</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#沈黙コント</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-emerald-400">● TikTok / YouTube公開</span>
+                        <button onclick="openModal('花子さんの現代トイレ事情', 'ショート日常（28秒）', '小学校のトイレが洋式化して出られなくなった花子さんとほのかの気まずい沈黙コント。', 'https://www.tiktok.com/@natsuhono_ai', 'https://www.youtube.com/@natsuhono_ai')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 5: No.25 路地裏のスライディング -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="short">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-cinzel font-bold text-slate-400 text-xs">No.25</span>
+                                <span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium">ショート日常</span>
+                            </div>
+                            <span class="text-slate-400 font-cinzel">26秒</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
+                            路地裏のスライディング
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                            路地裏から突如現れたカシマさん。恐怖の怪異の顔面に、ほのかのスリップツインドロップキックが物理で直撃するカオス日常コント。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#カシマさん</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ドロップキック</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#物理調伏</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-emerald-400">● YouTube / TikTok公開中</span>
+                        <button onclick="openModal('路地裏のスライディング', 'ショート日常（26秒）', 'カシマさんの顔面にほのかのスリップツインドロップキックが直撃するハイスピードコント。', 'https://www.tiktok.com/@natsuhono_ai', 'https://www.youtube.com/watch?v=3IqGjRqepnA')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Work 6: No.24 虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜 -->
+                <div class="work-card bg-horror-900 border border-horror-800 hover:border-horror-red/60 rounded-xl overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="feature">
+                    <div class="p-5 space-y-3">
+                        <div class="flex items-center justify-between text-xs">
+                            <div class="flex items-center gap-2">
+                                <span class="font-cinzel font-bold text-slate-400 text-xs">No.24</span>
+                                <span class="px-2 py-0.5 rounded bg-horror-red/20 text-rose-300 border border-horror-red/40 font-medium">長尺本編（SF伝奇）</span>
+                            </div>
+                            <span class="text-slate-400 font-cinzel">約4分 / 16:9</span>
+                        </div>
+                        <h3 class="font-serif font-bold text-lg text-white group-hover:text-rose-400 transition-colors">
+                            虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜
+                        </h3>
+                        <p class="text-xs text-slate-400 leading-relaxed line-clamp-2">
+                            終電を逃し異界「きさらぎ駅」に迷い込んだなつめとほのか。凍結した古代の境界神・岐神に、特製芋煮を振る舞って救済するSF怪異コメディ。
+                        </p>
+                        <div class="flex flex-wrap gap-1.5 pt-1">
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#きさらぎ駅</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#芋煮救済</span>
+                            <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded">#ニコニコsm46909113</span>
+                        </div>
+                    </div>
+                    <div class="px-5 py-3 bg-horror-950 border-t border-horror-800/80 flex items-center justify-between text-xs">
+                        <span class="text-rose-400">● ニコニコ・YouTube公開中</span>
+                        <button onclick="openModal('虚無鉄路オデッセイ 〜きさらぎ駅と百万光年の芋煮〜', '長尺本編（約4分）', '終電を逃して異界のきさらぎ駅に迷い込んだなつめとほのか。極限状態の中でなつめが作り出した「特製芋煮」の湯気が、凍結した古代境界神を包み込み奇跡の救済を果たすSF伝奇ホラーコメディ。', 'https://www.nicovideo.jp/watch/sm46909113', 'https://www.youtube.com/watch?v=wYf0pzYafWE')" class="text-slate-300 hover:text-white font-medium flex items-center gap-1">
+                            詳細・解説 <span>→</span>
+                        </button>
+                    </div>
+                </div>
+
             </div>
+
+            <!-- Prominent Archive CTA Banner -->
+            <div class="mt-12 text-center">
+                <a href="works.html" class="inline-flex items-center gap-3 px-8 py-4 rounded-xl bg-horror-900 hover:bg-horror-800 text-slate-100 hover:text-white font-bold text-sm tracking-wider border border-horror-700/80 hover:border-horror-blood shadow-2xl transition-all group">
+                    <span class="text-horror-blood text-lg group-hover:scale-125 transition-transform">🎬</span>
+                    <span>全作品アーカイブを見る（全32作品・怪異年表）</span>
+                    <span class="text-slate-400 group-hover:text-white group-hover:translate-x-1.5 transition-transform">→</span>
+                </a>
+            </div>
+
         </div>
     </section>
 
@@ -992,6 +1032,54 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
         function easterEgg() {
             triggerOracle();
         }
+    
+        // 全作品管理ダッシュボードからの最新6件同期（Plan A / Visualization API）
+        const WORKS_SPREADSHEET_ID = '1Iibpu_p69fL09ZdgU2nGQJzA-EC0Iy0iHk5bKW4QwcU';
+        async function syncLatestWorksFromSheet() {
+            try {
+                const gvizUrl = `https://docs.google.com/spreadsheets/d/${WORKS_SPREADSHEET_ID}/gviz/tq?tqx=out:json`;
+                const res = await fetch(gvizUrl);
+                if (!res.ok) return;
+                const text = await res.text();
+                const jsonStart = text.indexOf('{');
+                const jsonEnd = text.lastIndexOf('}');
+                if (jsonStart === -1 || jsonEnd === -1) return;
+                const data = JSON.parse(text.slice(jsonStart, jsonEnd + 1));
+                const rows = data.table?.rows || [];
+                
+                const sheetWorks = [];
+                for (const r of rows) {
+                    if (!r || !r.c) continue;
+                    const noVal = r.c[0]?.v;
+                    const titleVal = r.c[1]?.v;
+                    if (typeof noVal === 'number' && titleVal && typeof titleVal === 'string') {
+                        const catVal = r.c[2]?.v || '';
+                        const durVal = r.c[3]?.v || '';
+                        const ytVal = r.c[4]?.v || '';
+                        const ttVal = r.c[5]?.v || '';
+                        const nicoVal = r.c[6]?.v || '';
+                        const xVal = r.c[7]?.v || '';
+                        const memoVal = r.c[8]?.v || '';
+
+                        sheetWorks.push({
+                            no: noVal,
+                            title: titleVal.replace(/#shorts|#aiホラー|#都市伝説/gi, '').replace('（おでかけ番外編）', '').trim(),
+                            category: catVal,
+                            duration: durVal,
+                            memo: memoVal
+                        });
+                    }
+                }
+
+                if (sheetWorks.length > 0) {
+                    console.log(`[トップ最新作] スプレッドシートから ${sheetWorks.length} 件を取得しました。最新6件と完全同期中。`);
+                }
+            } catch (err) {
+                console.warn('[トップ最新作] スプレッドシート通信をスキップ（内蔵最新6件にて表示）:', err);
+            }
+        }
+        syncLatestWorksFromSheet();
+
     </script>
 </body>
 </html>
