@@ -243,10 +243,10 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
     <!-- Platform Hub Section (4大拠点) -->
     <section id="platforms" class="py-16 bg-horror-900/50 border-y border-horror-800/60 relative">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+            <div class="mb-8">
                 <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Official Hub</span>
                 <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">作品公開・配信拠点</h2>
-                <p class="text-sm text-slate-400">
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">
                     作品の形式や視聴スタイルに合わせてお好きなプラットフォームでご覧いただけます。
                 </p>
             </div>
@@ -553,10 +553,10 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
     <!-- Character Dossier (登場人物・怪異図鑑) -->
     <section id="characters" class="py-16 bg-horror-900/40 border-t border-horror-800/60">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+            <div class="mb-8">
                 <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Dossier</span>
                 <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">登場人物・怪異図鑑</h2>
-                <p class="text-sm text-slate-400">
+                <p class="text-xs sm:text-sm text-slate-400 mt-1">
                     東北の屋敷に集まった、奇妙で愛おしい家族たち。
                 </p>
             </div>
@@ -661,11 +661,11 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
     <section id="about" class="py-16 bg-horror-900/60 border-t border-horror-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             
-            <!-- Section Header (統一された中央揃えヘッダー) -->
-            <div class="text-center max-w-3xl mx-auto mb-12 space-y-2">
+            <!-- Section Header (作品アーカイブと統一した左寄せヘッダー) -->
+            <div class="mb-8 max-w-4xl">
                 <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">About & Guideline</span>
                 <h2 class="font-serif font-black text-2xl sm:text-3xl text-white">運営方針と制作体制</h2>
-                <p class="text-xs sm:text-sm text-slate-400 leading-relaxed">
+                <p class="text-xs sm:text-sm text-slate-400 mt-1 leading-relaxed">
                     「なつほのAIホラー」は、総指揮（座長）が企画・脚本・全プロンプト執筆・音響・映像編集を100%手作業で統括し、独自設計の専属AI制作班と共に創り上げる次世代の個人映像スタジオです。
                 </p>
             </div>
@@ -889,8 +889,14 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
             }
         });
 
-        // トマトの神託（全27パターン収録）
-        const quotes = [
+        // ========================================================
+        // トマトの神託 管理システム（案A: Googleスプレッドシート完全連動）
+        // ========================================================
+        // 座長専用スプレッドシートID（管理台帳）
+        const SPREADSHEET_ID = "1czENrh-GMLlQZwpOu7LU8IN424hrbL5EZ9l0WbmJelc";
+
+        // 内蔵デフォルトリスト（28件：初期ロード・オフライン時の三重防壁）
+        const defaultQuotes = [
             "件（クダン）の神託：「このトマトの糖度は9.8度でございます」",
             "件（クダン）の予言：「ダイシンに行く際は買い物メモを持参せよ。さもなくばブタメンのみ携えて帰還することになろう」",
             "件（クダン）の託宣：「今宵、屋敷に現れし異界の境界神は、熱々の芋煮によって完全に無力化される兆し」",
@@ -920,6 +926,57 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
             "参謀（戦略AI）：「座長、ガス欠厳禁です。省エネかつ最大効果の演出で参りましょう」",
             "九十九（電脳AI）：「インラインJSの乱れを調伏いたしました。構文検証（SYNTAX OK）完了でございます」"
         ];
+
+        let quotes = [...defaultQuotes];
+
+        // 外部ソース（Googleスプレッドシート / 外部JSON）からの非同期同期
+        async function loadQuotesFromSources() {
+            // 1. Googleスプレッドシート（GViz API）からのリアルタイム取得試行
+            try {
+                const sheetUrl = 'https://docs.google.com/spreadsheets/d/' + SPREADSHEET_ID + '/gviz/tq?tqx=out:json';
+                const res = await fetch(sheetUrl);
+                if (res.ok) {
+                    const text = await res.text();
+                    const jsonStart = text.indexOf('{');
+                    const jsonEnd = text.lastIndexOf('}');
+                    if (jsonStart !== -1 && jsonEnd !== -1) {
+                        const json = JSON.parse(text.substring(jsonStart, jsonEnd + 1));
+                        if (json.table && json.table.rows) {
+                            const sheetQuotes = json.table.rows
+                                .map(r => r.c && r.c[2] && r.c[2].v ? String(r.c[2].v).trim() : null)
+                                .filter(Boolean);
+                            if (sheetQuotes.length > 0) {
+                                quotes = sheetQuotes;
+                                console.log('[トマトの神託] Googleスプレッドシートから ' + quotes.length + ' 件の神託をリアルタイム同期しました。');
+                                return;
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn('[トマトの神託] スプレッドシートAPI接続をスキップ:', err);
+            }
+
+            // 2. 外部JSON（assets/quotes.json）からの取得試行
+            try {
+                const res = await fetch('assets/quotes.json');
+                if (res.ok) {
+                    const data = await res.json();
+                    if (Array.isArray(data) && data.length > 0) {
+                        quotes = data;
+                        console.log('[トマトの神託] assets/quotes.json から ' + quotes.length + ' 件の神託を読み込みました。');
+                        return;
+                    }
+                }
+            } catch (err) {
+                console.warn('[トマトの神託] 外部JSON取得をスキップ:', err);
+            }
+
+            console.log('[トマトの神託] 内蔵デフォルト神託（' + quotes.length + '件）にて稼働中。');
+        }
+
+        // 初期化ロード
+        loadQuotesFromSources();
 
         function triggerOracle() {
             const q = quotes[Math.floor(Math.random() * quotes.length)];
