@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>なつほのAIホラー 公式ポータル | Natsuhono AI Horror Official</title>
+    <!-- Favicon & App Icons -->
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/favicon-192x192.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/apple-touch-icon.png">
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com/3.4.17"></script>
     <!-- Google Fonts -->
@@ -87,7 +92,7 @@
     <header class="sticky top-0 z-40 bg-horror-950/90 backdrop-blur-md border-b border-horror-800/80">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
             <a href="#hero" class="flex items-center gap-3 group">
-                <span class="w-3 h-3 rounded-full bg-horror-blood animate-pulse"></span>
+                <img src="assets/favicon-32x32.png" alt="なつほのAIホラー 公式ロゴマーク" class="w-7 h-7 rounded-full shadow-md shadow-rose-950/40 group-hover:scale-110 transition-transform">
                 <span class="font-serif font-black text-lg sm:text-xl tracking-wider text-slate-100 group-hover:text-horror-blood transition-colors">
                     なつほのAIホラー
                 </span>
@@ -201,6 +206,7 @@
                         <img src="assets/key_visual.jpg" 
 alt="なつほのAIホラー 公式キービジュアル" 
 class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-transform duration-700">
+                        <div class="absolute inset-0 vignette-overlay pointer-events-none"></div>
 
                         <!-- Image Badges -->
                         <div class="absolute top-4 left-4 bg-horror-950/80 backdrop-blur-md border border-horror-800 px-3 py-1 rounded text-xs font-serif text-slate-300">
