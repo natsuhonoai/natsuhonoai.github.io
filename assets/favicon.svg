@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Dark Void Background Gradient -->
+    <radialGradient id="voidGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="60%" stop-color="#06070a"/>
+      <stop offset="100%" stop-color="#161b26"/>
+    </radialGradient>
+
+    <!-- Outer Crimson Omen Ring -->
+    <radialGradient id="omenGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="70%" stop-color="#e11d48"/>
+      <stop offset="95%" stop-color="#881337"/>
+      <stop offset="100%" stop-color="#4c0519"/>
+    </radialGradient>
+
+    <!-- Inner Eye Gradient -->
+    <radialGradient id="pupilGrad" cx="50%" cy="45%" r="55%">
+      <stop offset="0%" stop-color="#fb7185"/>
+      <stop offset="35%" stop-color="#e11d48"/>
+      <stop offset="75%" stop-color="#9f1239"/>
+      <stop offset="100%" stop-color="#020305"/>
+    </radialGradient>
+
+    <!-- Crimson Bloom Filter for subtle occult glow -->
+    <filter id="bloodGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+
+  <!-- Base Circle / Silhouette -->
+  <circle cx="32" cy="32" r="30" fill="url(#voidGrad)"/>
+
+  <!-- Outer Exorcism Seal Ring -->
+  <circle cx="32" cy="32" r="29" fill="none" stroke="url(#omenGlow)" stroke-width="2.5"/>
+
+  <!-- 8-Spoke Janome Bones (花子さんの退魔蛇の目番傘 骨組み) -->
+  <g stroke="#334155" stroke-width="1" opacity="0.85">
+    <line x1="32" y1="3" x2="32" y2="61"/>
+    <line x1="3" y1="32" x2="61" y2="32"/>
+    <line x1="11.5" y1="11.5" x2="52.5" y2="52.5"/>
+    <line x1="11.5" y1="52.5" x2="52.5" y2="11.5"/>
+  </g>
+
+  <!-- Concentric Talisman Barrier (白環・護符境界) -->
+  <circle cx="32" cy="32" r="21" fill="none" stroke="#f8fafc" stroke-width="2.5" opacity="0.95"/>
+  <circle cx="32" cy="32" r="17.5" fill="none" stroke="#06070a" stroke-width="1.5"/>
+
+  <!-- The Eerie Crimson Pupil (怪異・深紅の異形瞳) -->
+  <!-- Eyeball contour (横長・伏し目アーチ) -->
+  <path d="M 12 32 Q 32 16 52 32 Q 32 48 12 32 Z" fill="#0d1017" stroke="#be123c" stroke-width="1.8"/>
+
+  <!-- Iris -->
+  <circle cx="32" cy="32" r="9" fill="url(#pupilGrad)" filter="url(#bloodGlow)"/>
+
+  <!-- Occult Slit Core (縦長の瞳孔・悪夢の核) -->
+  <ellipse cx="32" cy="32" rx="2.4" ry="7.2" fill="#020305"/>
+
+  <!-- Spectral Glint (怪異の光彩ハイライト) -->
+  <circle cx="30" cy="29" r="1.5" fill="#ffffff" opacity="0.9"/>
+  <line x1="32" y1="23" x2="32" y2="41" stroke="#ffffff" stroke-width="0.8" opacity="0.4"/>
+</svg>
