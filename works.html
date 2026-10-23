@@ -1326,8 +1326,11 @@
                 }
             });
 
-            // Sort
+            // Sort (公開中優先 ＋ No.降順/昇順)
             cards.sort((a, b) => {
+                const aPub = a.getAttribute("data-published") === "true";
+                const bPub = b.getAttribute("data-published") === "true";
+                if (aPub !== bPub) return aPub ? -1 : 1; // 常に公開中を優先
                 const noA = parseInt(a.getAttribute("data-no") || '0', 10);
                 const noB = parseInt(b.getAttribute("data-no") || '0', 10);
                 return sortOrder === 'desc' ? (noB - noA) : (noA - noB);
@@ -1371,7 +1374,12 @@
             const grid = document.getElementById("works-grid");
             if (!grid) return;
             grid.innerHTML = '';
-            worksList.sort((a, b) => b.no - a.no);
+            worksList.sort((a, b) => {
+                const aPub = !!(a.ytUrl || a.nicoUrl || a.ttUrl || a.xUrl);
+                const bPub = !!(b.ytUrl || b.nicoUrl || b.ttUrl || b.xUrl);
+                if (aPub !== bPub) return aPub ? -1 : 1; // 公開中優先
+                return b.no - a.no; // No.降順
+            });
             worksList.forEach(w => {
                 const card = document.createElement("div");
                 const borderHover = w.catKey === 'vlog' ? 'hover:border-comedy-orange/60' : 'hover:border-horror-red/60';
@@ -1380,6 +1388,8 @@
                 card.setAttribute("data-category", w.catKey);
                 card.setAttribute("data-title", w.title.toLowerCase());
                 card.setAttribute("data-memo", w.memo.toLowerCase());
+                const isPublishedCard = !!(w.ytUrl || w.nicoUrl || w.ttUrl || w.xUrl);
+                card.setAttribute("data-published", isPublishedCard ? "true" : "false");
 
                 let catBadge = '<span class="px-2 py-0.5 rounded bg-rose-500/20 text-rose-300 border border-rose-500/40 font-medium text-[11px]">ショート日常</span>';
                 if (w.catKey === 'feature') {

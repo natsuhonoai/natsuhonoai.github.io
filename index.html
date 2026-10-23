@@ -195,7 +195,7 @@
             <div class="flex items-center gap-2 overflow-hidden">
                 <span class="bg-horror-blood text-white font-bold px-2 py-0.5 rounded text-[10px] tracking-wider shrink-0">NEWS</span>
                 <div class="truncate text-slate-300">
-                    <span class="text-comedy-yellow font-medium">【新着】</span> おでかけ番外編『ダイシンとブタメンと電気ケトル』X先行公開中！／ ニコニコ『きさらぎ駅と百万光年の芋煮』好評配信中
+                    <span class="text-comedy-yellow font-medium">【新着】</span> ショート日常『花子の怪力と開かない茶筒』『深夜の冷蔵庫とひんやりメリー』本日公開！／ ニコニコ『こっくりさんの末路』配信中
                 </div>
             </div>
             <div class="hidden sm:flex items-center gap-2 text-slate-400 shrink-0">
@@ -1277,11 +1277,31 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                 // 全作品管理ダッシュボードからの最新6件同期（Plan A / Visualization API）
         const WORKS_SPREADSHEET_ID = '1Iibpu_p69fL09ZdgU2nGQJzA-EC0Iy0iHk5bKW4QwcU';
 
+        function extractDate(str) {
+            if (!str || typeof str !== 'string') return null;
+            const m = str.match(/\b(\d{4})[\/-](\d{1,2})[\/-](\d{1,2})\b/);
+            if (!m) return null;
+            return `${m[1]}-${String(m[2]).padStart(2, '0')}-${String(m[3]).padStart(2, '0')}`;
+        }
+
         function renderIndexTop6(worksList) {
             const grid = document.getElementById("works-grid");
             if (!grid) return;
-            const published = worksList.filter(w => (w.ytUrl || w.nicoUrl || w.ttUrl || w.xUrl));
-            const top6 = published.sort((a, b) => b.no - a.no).slice(0, 6);
+
+            // 1. 公開中（いずれかのURLが存在する、または初公開日が存在する）作品を抽出
+            const published = worksList.filter(w => (w.ytUrl || w.nicoUrl || w.ttUrl || w.xUrl || w.firstReleaseDate));
+
+            // 2. 初公開日（最も古い公開日）の降順（新しい日付が先頭）、同日の場合はNo.降順
+            published.sort((a, b) => {
+                const dateA = a.firstReleaseDate || '1970-01-01';
+                const dateB = b.firstReleaseDate || '1970-01-01';
+                if (dateA !== dateB) {
+                    return dateB.localeCompare(dateA); // 最新公開作が先頭
+                }
+                return b.no - a.no; // 同日の場合はNo降順
+            });
+
+            const top6 = published.slice(0, 6);
             grid.innerHTML = '';
             top6.forEach(w => {
                 const card = document.createElement("div");
@@ -1374,14 +1394,21 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                         const catVal = r.c[2]?.v || '';
                         const durVal = r.c[3]?.v || '';
                         const ytVal = r.c[4]?.v || '';
-                        const ttVal = r.c[5]?.v || '';
-                        const nicoVal = r.c[6]?.v || '';
+                        const nicoVal = r.c[5]?.v || '';
+                        const ttVal = r.c[6]?.v || '';
                         const xVal = r.c[7]?.v || '';
                         const memoVal = r.c[8]?.v || '';
                         const ytUrl = r.c[9]?.v || '';
                         const nicoUrl = r.c[10]?.v || '';
                         const ttUrl = r.c[11]?.v || '';
                         const xUrl = r.c[12]?.v || '';
+
+                        // 各プラットフォームの公開日（YYYY-MM-DD）を抽出して最古の日付（初公開日）を判定
+                        const dateStrings = [ytVal, nicoVal, ttVal, xVal]
+                            .map(extractDate)
+                            .filter(Boolean);
+                        dateStrings.sort();
+                        const firstReleaseDate = dateStrings.length > 0 ? dateStrings[0] : null;
 
                         let catKey = 'short';
                         if (catVal.includes('長尺')) catKey = 'feature';
@@ -1395,9 +1422,10 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                             catKey: catKey,
                             duration: durVal,
                             memo: memoVal,
+                            firstReleaseDate: firstReleaseDate,
                             ytStatus: ytVal,
-                            ttStatus: ttVal,
                             nicoStatus: nicoVal,
+                            ttStatus: ttVal,
                             xStatus: xVal,
                             ytUrl: ytUrl,
                             nicoUrl: nicoUrl,
@@ -1409,7 +1437,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
 
                 if (newWorks.length > 0) {
                     renderIndexTop6(newWorks);
-                    console.log(`[トップ最新作] スプレッドシートから最新 ${newWorks.length} 件を取得・動的同期しました。`);
+                    console.log(`[トップ最新作] スプレッドシートから最新 ${newWorks.length} 件を取得・動的同期しました（初公開日ソート適用）。`);
                 }
             } catch (err) {
                 console.warn('[トップ最新作] スプレッドシート通信をスキップ（内蔵最新6件にて表示）:', err);
