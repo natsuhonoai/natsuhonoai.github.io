@@ -122,7 +122,7 @@
                 <a href="#works" class="hover:text-horror-blood transition-colors">最新作品</a>
                 <a href="works.html" class="text-comedy-yellow hover:text-white transition-colors flex items-center gap-1.5 font-bold">
                     <span>全作品一覧</span>
-                    <span class="text-[10px] bg-horror-800 text-slate-300 px-1.5 py-0.5 rounded border border-horror-700 font-cinzel">32+</span>
+                    <span class="text-[10px] bg-horror-800 text-slate-300 px-1.5 py-0.5 rounded border border-horror-700 font-cinzel"><span class="js-total-works"></span>+</span>
                 </a>
                 <a href="#characters" class="hover:text-horror-blood transition-colors">登場人物</a>
                 <a href="#about" class="hover:text-horror-blood transition-colors">ガイドライン</a>
@@ -160,8 +160,8 @@
             <a href="#platforms" class="block py-1.5 text-slate-300 hover:text-horror-blood">配信拠点（SNS）</a>
             <a href="#works" class="block py-1.5 text-slate-300 hover:text-horror-blood">最新公開作品</a>
             <a href="works.html" class="block py-1.5 text-comedy-yellow hover:text-white font-bold flex items-center justify-between">
-                <span>全作品一覧（全32作品アーカイブ）</span>
-                <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded border border-horror-700 font-cinzel">32+</span>
+                <span>全作品一覧（全<span class="js-total-works"></span>作品アーカイブ）</span>
+                <span class="text-[10px] bg-horror-800 text-slate-300 px-2 py-0.5 rounded border border-horror-700 font-cinzel"><span class="js-total-works"></span>+</span>
             </a>
             <a href="#characters" class="block py-1.5 text-slate-300 hover:text-horror-blood">登場人物（怪異図鑑）</a>
             <a href="#about" class="block py-1.5 text-slate-300 hover:text-horror-blood">ガイドライン・案内</a>
@@ -200,7 +200,7 @@
             </div>
             <div class="hidden sm:flex items-center gap-2 text-slate-400 shrink-0">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-ping"></span>
-                <span>全32作品 展開中</span>
+                <span>全<span class="js-total-works"></span>作品 展開中</span>
             </div>
         </div>
     </div>
@@ -244,7 +244,7 @@
                         <a href="works.html" class="bg-horror-900/80 hover:bg-horror-800 p-2.5 rounded-lg border border-horror-800 hover:border-comedy-yellow/50 transition-all block group" title="全作品アーカイブを見る">
                             <div class="text-xs text-slate-400 group-hover:text-comedy-yellow transition-colors">総作品数</div>
                             <div class="text-lg font-bold text-slate-100 font-cinzel flex items-center justify-center gap-1">
-                                <span>32+</span>
+                                <span><span class="js-total-works"></span>+</span>
                                 <span class="text-[10px] text-slate-400 group-hover:translate-x-0.5 transition-transform">→</span>
                             </div>
                         </a>
@@ -430,7 +430,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                 <!-- Archive Page Link Button -->
                 <div class="flex items-center gap-3">
                     <a href="works.html" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-horror-900 hover:bg-horror-800 text-comedy-yellow hover:text-white text-xs font-bold border border-horror-700/80 hover:border-comedy-yellow/60 transition-all shadow-md group">
-                        <span>全作品アーカイブ（32作品）</span>
+                        <span>全作品アーカイブ（<span class="js-total-works"></span>作品）</span>
                         <span class="group-hover:translate-x-1 transition-transform">→</span>
                     </a>
                 </div>
@@ -1249,6 +1249,16 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                 // 全作品管理ダッシュボードからの最新6件同期（Plan A / Visualization API）
         const WORKS_SPREADSHEET_ID = '1Iibpu_p69fL09ZdgU2nGQJzA-EC0Iy0iHk5bKW4QwcU';
 
+        // 全作品数表示の動的更新（デフォルト値は空文字）
+        let totalWorksCount = "";
+        function updateTotalWorksCount(count = "") {
+            totalWorksCount = (count !== undefined && count !== null && count !== "") ? String(count) : "";
+            document.querySelectorAll(".js-total-works").forEach(el => {
+                el.textContent = totalWorksCount;
+            });
+        }
+        updateTotalWorksCount("");
+
         function extractDate(cell) {
             if (!cell) return null;
             const candidates = [];
@@ -1435,6 +1445,7 @@ class="w-full h-auto object-cover transform group-hover:scale-[1.02] transition-
                 }
 
                 if (newWorks.length > 0) {
+                    updateTotalWorksCount(newWorks.length);
                     renderIndexTop6(newWorks);
                     console.log(`[トップ最新作] スプレッドシートから最新 ${newWorks.length} 件を取得・動的同期しました（GViz Date対応初公開日ソート）。`);
                 }

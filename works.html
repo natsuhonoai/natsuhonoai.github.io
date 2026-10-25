@@ -176,7 +176,7 @@
             </nav>
             <div id="sync-badge" class="flex items-center gap-2 text-[11px] text-emerald-400">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-                <span id="sync-text">スプレッドシート連動中（全32作品）</span>
+                <span id="sync-text">スプレッドシート連動中（全<span class="js-total-works"></span>作品）</span>
             </div>
         </div>
     </div>
@@ -190,7 +190,7 @@
                 <span class="text-xs font-bold text-horror-blood uppercase tracking-widest font-cinzel">Complete Filmography</span>
                 <h1 class="font-serif font-black text-3xl sm:text-4xl text-white">全作品アーカイブ・怪異年表</h1>
                 <p class="text-sm text-slate-400 max-w-3xl leading-relaxed">
-                    東北の屋敷から始まった怪異と家族の奇妙な記録。全32作品の長尺シネマ本編・ショート日常・おでかけ番外編を完全網羅。
+                    東北の屋敷から始まった怪異と家族の奇妙な記録。全<span id="intro-total-count" class="js-total-works"></span>作品の長尺シネマ本編・ショート日常・おでかけ番外編を完全網羅。
                     参謀が管理するダッシュボードと直結し、常に最新の作品情報がリアルタイム反映されます。
                 </p>
             </div>
@@ -199,19 +199,19 @@
             <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
                 <div class="bg-horror-900/80 p-3 rounded-xl border border-horror-800">
                     <div class="text-[11px] text-slate-400">総作品数</div>
-                    <div id="count-total" class="text-xl font-bold text-slate-100 font-cinzel">32</div>
+                    <div id="count-total" class="text-xl font-bold text-slate-100 font-cinzel js-total-works"></div>
                 </div>
                 <div class="bg-horror-900/80 p-3 rounded-xl border border-horror-800">
                     <div class="text-[11px] text-slate-400">長尺本編（シネマ）</div>
-                    <div id="count-feature" class="text-xl font-bold text-rose-400 font-cinzel">12</div>
+                    <div id="count-feature" class="text-xl font-bold text-rose-400 font-cinzel"></div>
                 </div>
                 <div class="bg-horror-900/80 p-3 rounded-xl border border-horror-800">
                     <div class="text-[11px] text-slate-400">ショート日常コント</div>
-                    <div id="count-short" class="text-xl font-bold text-emerald-400 font-cinzel">15</div>
+                    <div id="count-short" class="text-xl font-bold text-emerald-400 font-cinzel"></div>
                 </div>
                 <div class="bg-horror-900/80 p-3 rounded-xl border border-horror-800">
                     <div class="text-[11px] text-slate-400">おでかけ番外編</div>
-                    <div id="count-vlog" class="text-xl font-bold text-amber-400 font-cinzel">5</div>
+                    <div id="count-vlog" class="text-xl font-bold text-amber-400 font-cinzel"></div>
                 </div>
             </div>
         </div>
@@ -222,16 +222,16 @@
             <!-- Category Buttons -->
             <div class="flex flex-wrap gap-2 text-xs" id="category-filter">
                 <button data-cat="all" class="filter-btn active px-3.5 py-2 rounded-lg bg-horror-blood text-white font-bold border border-horror-blood transition-all">
-                    すべて (<span id="cat-badge-all">32</span>)
+                    すべて (<span id="cat-badge-all" class="js-total-works"></span>)
                 </button>
                 <button data-cat="feature" class="filter-btn px-3.5 py-2 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">
-                    長尺本編 (<span id="cat-badge-feature">12</span>)
+                    長尺本編 (<span id="cat-badge-feature"></span>)
                 </button>
                 <button data-cat="short" class="filter-btn px-3.5 py-2 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">
-                    ショート日常 (<span id="cat-badge-short">15</span>)
+                    ショート日常 (<span id="cat-badge-short"></span>)
                 </button>
                 <button data-cat="vlog" class="filter-btn px-3.5 py-2 rounded-lg bg-horror-800 text-slate-300 hover:bg-horror-700 border border-horror-700 transition-all">
-                    おでかけ番外編 (<span id="cat-badge-vlog">5</span>)
+                    おでかけ番外編 (<span id="cat-badge-vlog"></span>)
                 </button>
             </div>
 
@@ -251,7 +251,7 @@
 
         <!-- Result Status Counter -->
         <div class="flex items-center justify-between text-xs text-slate-400 px-1">
-            <span id="result-status-text">全 32 作品を表示中</span>
+            <span id="result-status-text">全 <span class="js-total-works"></span> 作品を表示中</span>
             <span class="text-[11px] text-slate-500">※カードをクリックすると各配信先リンクと詳細が開きます</span>
         </div>
 
@@ -1370,6 +1370,49 @@
                 // Google Spreadsheet Live Sync (Plan A / Visualization API)
         const SPREADSHEET_ID = '1Iibpu_p69fL09ZdgU2nGQJzA-EC0Iy0iHk5bKW4QwcU';
 
+        // 全作品数・区分別作品数の動的更新（デフォルト値は空文字）
+        let totalWorksCount = "";
+        let featureWorksCount = "";
+        let shortWorksCount = "";
+        let vlogWorksCount = "";
+
+        function updateWorksCounts(worksList = null) {
+            if (Array.isArray(worksList) && worksList.length > 0) {
+                totalWorksCount = String(worksList.length);
+                featureWorksCount = String(worksList.filter(w => w.catKey === "feature").length);
+                shortWorksCount = String(worksList.filter(w => w.catKey === "short").length);
+                vlogWorksCount = String(worksList.filter(w => w.catKey === "vlog").length);
+            } else {
+                totalWorksCount = "";
+                featureWorksCount = "";
+                shortWorksCount = "";
+                vlogWorksCount = "";
+            }
+
+            document.querySelectorAll(".js-total-works").forEach(el => {
+                el.textContent = totalWorksCount;
+            });
+
+            const countTotalEl = document.getElementById("count-total");
+            const countFeatureEl = document.getElementById("count-feature");
+            const countShortEl = document.getElementById("count-short");
+            const countVlogEl = document.getElementById("count-vlog");
+            if (countTotalEl) countTotalEl.textContent = totalWorksCount;
+            if (countFeatureEl) countFeatureEl.textContent = featureWorksCount;
+            if (countShortEl) countShortEl.textContent = shortWorksCount;
+            if (countVlogEl) countVlogEl.textContent = vlogWorksCount;
+
+            const badgeAllEl = document.getElementById("cat-badge-all");
+            const badgeFeatureEl = document.getElementById("cat-badge-feature");
+            const badgeShortEl = document.getElementById("cat-badge-short");
+            const badgeVlogEl = document.getElementById("cat-badge-vlog");
+            if (badgeAllEl) badgeAllEl.textContent = totalWorksCount;
+            if (badgeFeatureEl) badgeFeatureEl.textContent = featureWorksCount;
+            if (badgeShortEl) badgeShortEl.textContent = shortWorksCount;
+            if (badgeVlogEl) badgeVlogEl.textContent = vlogWorksCount;
+        }
+        updateWorksCounts(null);
+
         function renderDynamicCards(worksList) {
             const grid = document.getElementById("works-grid");
             if (!grid) return;
@@ -1510,9 +1553,10 @@
                 }
 
                 if (newWorks.length > 0) {
+                    updateWorksCounts(newWorks);
                     renderDynamicCards(newWorks);
                     const syncText = document.getElementById("sync-text");
-                    if (syncText) syncText.textContent = `スプレッドシート完全同期済み（全${newWorks.length}作品）`;
+                    if (syncText) syncText.innerHTML = `スプレッドシート完全同期済み（全<span class="js-total-works">${totalWorksCount}</span>作品）`;
                     console.log(`[作品管理] スプレッドシートから ${newWorks.length} 件を取得・動的反映しました。`);
                 }
             } catch (err) {
