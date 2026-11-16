@@ -1019,14 +1019,15 @@
             </p>
           </div>
 
-          <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 flex items-center justify-between text-xs text-slate-300 shadow-xl">
+          <div class="bg-horror-950 p-5 rounded-xl border border-horror-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-slate-300 shadow-xl">
             <div>
               <span class="font-bold text-white">お問い合わせ・協業相談</span>
-              <p class="text-slate-400 text-[11px] mt-0.5">X（@natsuhono_ai）のDMまたは公式窓口までお願いいたします。</p>
+              <p class="text-slate-400 text-[11px] mt-0.5 leading-relaxed">お仕事のご依頼・コラボ等のご連絡は下記ボタンよりメールにてお願いいたします（スパム対策のためXのDMはフォロー外制限中です）。</p>
             </div>
-            <a href="https://x.com/natsuhono_ai" target="_blank" rel="noopener noreferrer" class="px-3 py-2 rounded bg-horror-800 hover:bg-horror-700 text-white font-medium border border-horror-700 transition-colors shrink-0">
-              公式X DMへ
-            </a>
+            <button type="button" id="mail-btn" class="contact-button px-4 py-2.5 rounded-lg bg-horror-blood hover:bg-rose-700 text-white font-bold border border-rose-500/40 transition-all shrink-0 shadow-md flex items-center justify-center gap-1.5 cursor-pointer">
+              <span>✉️</span>
+              <span>メールでお問い合わせ</span>
+            </button>
           </div>
         </div>
 
@@ -1185,6 +1186,18 @@
         showToast("URL: " + text);
       }
       document.body.removeChild(ta);
+    }
+
+    // Anti-spam split email contact handler (v2.11)
+    const mailBtn = document.getElementById("mail-btn");
+    if (mailBtn) {
+      mailBtn.addEventListener("click", () => {
+        const userParts = ["natsuhono", "ai"];
+        const domainParts = ["gmail", "com"];
+        const address = userParts.join(".") + "@" + domainParts.join(".");
+        copyToClipboard(address, "連絡用メールアドレスをコピーしました（メールアプリを起動します）");
+        window.location.href = "mai" + "lto:" + address;
+      });
     }
 
     // Filter works by category
